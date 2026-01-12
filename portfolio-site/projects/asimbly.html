@@ -3,239 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asimbly - System Breakdown | Lawrence Quick</title>
-    <!-- Note the "../" to go up one folder level to find styles -->
+    <title>Asimbly Case Study | Lawrence Quick</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
-    <div class="container">
-        <!-- HEADER -->
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="../index.html">&larr; Back to Home</a></li>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">LAWRENCE QUICK<span style="color:var(--text-accent)">.</span></a>
+            <div class="nav-links">
+                <a href="../index.html">Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CASE STUDY HERO -->
+    <header class="case-hero">
+        <!-- Background Image -->
+        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2000&auto=format&fit=crop" class="case-bg" alt="Background">
+        
+        <div class="case-title-block">
+            <p class="text-mono" style="margin-bottom: 1rem;">CASE STUDY • UNREAL ENGINE 5</p>
+            <h1>Asimbly: Scalable FPS Systems</h1>
+            <p style="max-width: 600px; color: #ddd;">
+                Designing a robust architecture for Character Movement, UI Persistence, and Interactions in a long-term collaborative project.
+            </p>
+        </div>
+    </header>
+
+    <!-- CONTENT GRID -->
+    <div class="case-grid">
+        
+        <!-- Sidebar Navigation -->
+        <aside>
+            <div class="toc-sticky">
+                <h4>At a Glance</h4>
+                <ul style="margin-bottom: 2rem; font-size: 0.9rem; color: #ccc;">
+                    <li><strong>Role:</strong> Gameplay Engineer</li>
+                    <li><strong>Team:</strong> 2 Developers</li>
+                    <li><strong>Duration:</strong> 1 Year+</li>
                 </ul>
-            </nav>
-        </header>
 
-        <main>
-            <!-- PROJECT TITLE -->
-            <section style="margin-bottom: 3rem;">
-                <h1>Asimbly</h1>
-                <p style="color: var(--accent); font-family: monospace; font-size: 1.1rem;">
-                    Role: Gameplay & Systems Developer | Engine: Unreal Engine 5
-                </p>
-                <br>
+                <h4>Contents</h4>
+                <nav>
+                    <a href="#character" class="toc-link">1. Character Controller</a>
+                    <a href="#ui" class="toc-link">2. UI Architecture</a>
+                    <a href="#materials" class="toc-link">3. Materials & FX</a>
+                    <a href="#interaction" class="toc-link">4. Interaction System</a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="case-content">
+            
+            <!-- SECTION 1 -->
+            <section id="character">
+                <h2 style="margin-top: 0; border-top: none;">1. Character Systems</h2>
                 <p>
-                    <strong>Overview:</strong> Asimbly is a long-term, two-person collaborative project. 
-                    My role focused on building scalable, maintainable gameplay systems including 
-                    character movement, UI architecture, and AI behavior.
+                    The core requirement was a "True First Person" controller that supported complex states like sliding and mantling 
+                    without becoming a tangle of boolean checks.
                 </p>
-            </section>
-
-            <!-- TABLE OF CONTENTS -->
-            <section style="background: var(--card-bg); padding: 1rem; border-radius: 8px; margin-bottom: 3rem;">
-                <h4 style="margin-top:0;">System Breakdowns:</h4>
-                <ul style="margin-left: 1.5rem;">
-                    <li><a href="#character">1. Character Systems</a></li>
-                    <li><a href="#ui">2. UI Systems</a></li>
-                    <li><a href="#materials">3. Material Design & HLSL</a></li>
-                    <li><a href="#sound">4. Sound Systems</a></li>
-                    <li><a href="#ai">5. AI Design</a></li>
-                    <li><a href="#interaction">6. Interaction Systems</a></li>
-                </ul>
-            </section>
-
-            <!-- ========================================= -->
-            <!-- SYSTEM BLOCK 1: CHARACTER -->
-            <!-- ========================================= -->
-            <section id="character" class="system-block">
-                <h2>1. Character Systems</h2>
                 
-                <div class="system-content">
-                    <div class="system-text">
-                        <h3>Scope</h3>
-                        <p>
-                            Implemented a True First Person character setup extending Unreal’s 
-                            <span class="tech-tag">CharacterMovementComponent</span>. 
-                            Features include sliding, mantling, and climbing.
-                        </p>
-                        <br>
-                        <h3>Technical Focus</h3>
-                        <p>
-                            The priority was responsiveness and clean state transitions. 
-                            I utilized a custom Enum state machine to handle transitions between 
-                            Walking, Sliding, and Mantling to prevent state conflicts.
-                        </p>
-                    </div>
-                    <div class="system-media">
-                        <!-- PLACEHOLDER IMAGE: Replace 'src' with '../assets/gifs/your-file.gif' -->
-                        <img src="https://via.placeholder.com/600x400/333/fff?text=GIF:+Character+Movement" alt="Character Movement Demo">
-                    </div>
+                <div class="case-media">
+                    <!-- Placeholder GIF -->
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop" alt="Character Movement">
                 </div>
 
-                <div class="reflection-box">
-                    <strong>Reflection:</strong> 
-                    Early iterations relied too heavily on Blueprint tick for state checking. 
-                    I refactored this to event-driven logic to optimize performance and improve frame-rate stability.
-                </div>
-            </section>
-
-
-            <!-- ========================================= -->
-            <!-- SYSTEM BLOCK 2: UI -->
-            <!-- ========================================= -->
-            <section id="ui" class="system-block">
-                <h2>2. UI Systems</h2>
-                
-                <div class="system-content">
-                    <div class="system-media">
-                         <!-- PLACEHOLDER IMAGE -->
-                        <img src="https://via.placeholder.com/600x400/333/fff?text=Screenshot:+Settings+Menu" alt="UI Settings Menu">
-                    </div>
-                    <div class="system-text">
-                        <h3>Scope</h3>
-                        <p>
-                            Designed a persistent Settings system (Keybindings, Audio, Graphics) 
-                            and a modular Main Menu.
-                        </p>
-                        <br>
-                        <h3>Architecture</h3>
-                        <p>
-                            I created a custom C++ <span class="tech-tag">GameInstanceSubsystem</span> 
-                            to handle saving/loading user configuration. This separates UI logic (View) 
-                            from data storage (Model), making the system accessible from any level 
-                            without casting overhead.
-                        </p>
-                    </div>
+                <div class="tech-box">
+                    <strong>The Solution: State Machines</strong><br><br>
+                    I extended <code>UCharacterMovementComponent</code> to handle custom movement modes. 
+                    Transitions are handled via a strict Enum State Machine. This prevents invalid states 
+                    (e.g., trying to slide while in mid-air).
                 </div>
 
-                <div class="reflection-box">
-                    <strong>Reflection:</strong> 
-                    Separating the Data Layer from the Widget Layer was crucial. Initially, widgets 
-                    held their own variables, which caused data loss on level transition. The Subsystem solved this.
-                </div>
-            </section>
-
-
-            <!-- ========================================= -->
-            <!-- SYSTEM BLOCK 3: MATERIALS -->
-            <!-- ========================================= -->
-            <section id="materials" class="system-block">
-                <h2>3. Material Design & HLSL</h2>
-                
-                <div class="system-content">
-                    <div class="system-text">
-                        <h3>Scope</h3>
-                        <p>
-                            Created a custom world grid material extended from third-party assets 
-                            and HLSL-driven UI visual effects for damage feedback.
-                        </p>
-                        <br>
-                        <h3>Technical Focus</h3>
-                        <p>
-                            Focused on visual clarity and shader performance. UI effects use 
-                            dynamic material instances to react to gameplay events in real-time.
-                        </p>
-                    </div>
-                    <div class="system-media">
-                        <img src="https://via.placeholder.com/600x400/333/fff?text=Screenshot:+Material+Grid" alt="Material Design">
-                    </div>
-                </div>
-            </section>
-
-
-            <!-- ========================================= -->
-            <!-- SYSTEM BLOCK 4: SOUND -->
-            <!-- ========================================= -->
-            <section id="sound" class="system-block">
-                <h2>4. Sound Systems</h2>
                 <p>
-                    <em>Environmental audio feedback driven by physics materials and a persistent music manager.</em>
+                    For mantling, I utilized a "Capsule Trace" followed by a "Sphere Trace" to detect ledge height 
+                    and depth, ensuring the player only mantles onto valid geometry.
                 </p>
-                <br>
-                <div class="system-content">
-                    <div class="system-media">
-                        <img src="https://via.placeholder.com/600x400/333/fff?text=Diagram:+Sound+Logic" alt="Sound System">
-                    </div>
-                    <div class="system-text">
-                        <p>
-                            The system queries the Physical Material of the surface the player walks on 
-                            to trigger the correct footprint SFX. The music system persists across level 
-                            loading boundaries using the GameInstance.
-                        </p>
-                    </div>
+            </section>
+
+            <!-- SECTION 2 -->
+            <section id="ui">
+                <h2>2. UI Architecture</h2>
+                <p>
+                    A common issue in Blueprint projects is UI data loss when levels change. 
+                    I implemented a <strong>GameInstanceSubsystem</strong> in C++ to act as the persistent data layer.
+                </p>
+
+                <div class="case-media">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop" alt="UI System">
+                </div>
+
+                <p>
+                    The UI Widgets act purely as a "View." When opened, they query the Subsystem for the current 
+                    Sensitivity or Volume settings. This creates a clean separation of concerns and makes debugging much easier.
+                </p>
+            </section>
+
+             <!-- SECTION 3 -->
+             <section id="materials">
+                <h2>3. Materials & Visuals</h2>
+                <p>
+                    I created a custom world grid material extended from third-party assets and HLSL-driven UI visual effects.
+                </p>
+                <div class="case-media">
+                     <img src="https://images.unsplash.com/photo-1620641788427-b9f4dbf2700f?q=80&w=1000&auto=format&fit=crop" alt="Materials">
                 </div>
             </section>
 
-
-            <!-- ========================================= -->
-            <!-- SYSTEM BLOCK 5: AI -->
-            <!-- ========================================= -->
-            <section id="ai" class="system-block">
-                <h2>5. AI Design</h2>
+            <!-- SECTION 4 -->
+            <section id="interaction">
+                <h2>4. Interaction System</h2>
+                <p>
+                    To avoid hard references (casting to specific actors), I utilized a Blueprint Interface 
+                    <code>BPI_Interact</code>.
+                </p>
                 
-                <div class="system-content">
-                    <div class="system-text">
-                        <h3>Scope</h3>
-                        <p>
-                            Implemented Behavior Trees and EQS (Environment Query System) for 
-                            tactical AI decision making.
-                        </p>
-                        <br>
-                        <h3>Focus Areas</h3>
-                        <p>
-                            Clean behavior separation. The AI uses a modular Service to check for line-of-sight 
-                            and updates the Blackboard only when necessary, reducing overhead.
-                        </p>
-                    </div>
-                    <div class="system-media">
-                        <img src="https://via.placeholder.com/600x400/333/fff?text=GIF:+AI+Behavior+Tree" alt="AI Behavior Tree">
-                    </div>
-                </div>
-            </section>
-
-
-            <!-- ========================================= -->
-            <!-- SYSTEM BLOCK 6: INTERACTION -->
-            <!-- ========================================= -->
-            <section id="interaction" class="system-block">
-                <h2>6. Interaction Systems</h2>
-                
-                <div class="system-content">
-                    <div class="system-media">
-                        <img src="https://via.placeholder.com/600x400/333/fff?text=GIF:+Interaction+System" alt="Interaction System">
-                    </div>
-                    <div class="system-text">
-                        <h3>Scope</h3>
-                        <p>
-                            A generalized interaction interface and a radar system for locating objectives.
-                        </p>
-                        <br>
-                        <h3>Architecture</h3>
-                        <p>
-                            Used a Blueprint Interface (<span class="tech-tag">BPI_Interact</span>) 
-                            so the player character does not need to cast to specific actors. 
-                            Any actor implementing the interface responds to the "Interact" message.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="reflection-box">
-                    <strong>Reflection:</strong> 
-                    This was a shift from my early projects where I used casting. The Interface approach 
-                    decoupled the systems, allowing me to add new interactable types without touching the player code.
+                <div class="tech-box">
+                    <code>Event Interact(PlayerRef)</code><br>
+                    Any actor that implements this interface responds to the player's input. 
+                    This allows for a decoupled system where doors, switches, and pickups all share logic 
+                    without the player character needing to know what they are.
                 </div>
             </section>
 
         </main>
-
-        <footer>
-            <p>&copy; 2025 Lawrence Quick. <br> <a href="#">GitHub</a> | <a href="#">Email</a></p>
-        </footer>
-
     </div>
+
+    <footer style="text-align: center; padding: 4rem 0; margin-top: 4rem; border-top: var(--border);">
+        <p style="color: var(--text-secondary);">Designed & Built by Lawrence Quick</p>
+    </footer>
 
 </body>
 </html>
