@@ -3,139 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asimbly Case Study | Lawrence Quick</title>
+    <title>Asimbly Technical Breakdown | Lawrence Quick</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR (Consistent with Home, no Resume button) -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../index.html" class="logo">LAWRENCE QUICK<span style="color:var(--text-accent)">.</span></a>
+            <a href="../index.html" class="logo">Lawrence Quick</a>
             <div class="nav-links">
                 <a href="../index.html">Back to Home</a>
             </div>
         </div>
     </nav>
 
-    <!-- CASE STUDY HERO -->
+    <!-- PROJECT HEADER -->
     <header class="case-hero">
-        <!-- Background Image -->
-        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2000&auto=format&fit=crop" class="case-bg" alt="Background">
-        
-        <div class="case-title-block">
-            <p class="text-mono" style="margin-bottom: 1rem;">CASE STUDY • UNREAL ENGINE 5</p>
-            <h1>Asimbly: Scalable FPS Systems</h1>
-            <p style="max-width: 600px; color: #ddd;">
-                Designing a robust architecture for Character Movement, UI Persistence, and Interactions in a long-term collaborative project.
+        <div class="section-padding">
+            <span class="text-mono" style="color: var(--text-accent);">PROJECT CASE STUDY</span>
+            <h1>Asimbly</h1>
+            <p style="max-width: 700px; margin: 0 auto; color: var(--text-secondary);">
+                A deep dive into the system architecture of a collaborative FPS project. 
+                Focusing on scalable C++ foundations and Blueprint implementation.
             </p>
+        </div>
+        
+        <!-- MAIN HEADER IMAGE/GIF PLACEHOLDER -->
+        <div style="max-width: 1000px; margin: 0 auto; height: 400px; background: #111; border: var(--border); border-radius: 8px; overflow: hidden;">
+            <img src="https://placehold.co/1000x400/111/444?text=IMAGE:+Wide+Environment+Shot+of+Asimbly" alt="Asimbly Banner">
         </div>
     </header>
 
     <!-- CONTENT GRID -->
     <div class="case-grid">
         
-        <!-- Sidebar Navigation -->
+        <!-- SIDEBAR (TOC) -->
         <aside>
             <div class="toc-sticky">
-                <h4>At a Glance</h4>
-                <ul style="margin-bottom: 2rem; font-size: 0.9rem; color: #ccc;">
-                    <li><strong>Role:</strong> Gameplay Engineer</li>
-                    <li><strong>Team:</strong> 2 Developers</li>
-                    <li><strong>Duration:</strong> 1 Year+</li>
-                </ul>
-
-                <h4>Contents</h4>
+                <h4 style="margin-bottom: 1rem; color: #fff;">System Breakdowns</h4>
                 <nav>
                     <a href="#character" class="toc-link">1. Character Controller</a>
                     <a href="#ui" class="toc-link">2. UI Architecture</a>
-                    <a href="#materials" class="toc-link">3. Materials & FX</a>
-                    <a href="#interaction" class="toc-link">4. Interaction System</a>
+                    <a href="#materials" class="toc-link">3. Material Design</a>
+                    <a href="#sound" class="toc-link">4. Audio Systems</a>
+                    <a href="#ai" class="toc-link">5. AI Behavior</a>
+                    <a href="#interaction" class="toc-link">6. Interaction Logic</a>
                 </nav>
             </div>
         </aside>
 
-        <!-- Main Content -->
-        <main class="case-content">
+        <!-- MAIN CONTENT -->
+        <main>
             
-            <!-- SECTION 1 -->
-            <section id="character">
-                <h2 style="margin-top: 0; border-top: none;">1. Character Systems</h2>
+            <!-- 1. CHARACTER -->
+            <section id="character" class="system-section" style="border-top: none;">
+                <h2>1. Character Systems</h2>
                 <p>
-                    The core requirement was a "True First Person" controller that supported complex states like sliding and mantling 
-                    without becoming a tangle of boolean checks.
+                    <strong>Goal:</strong> Create a responsive "True First Person" controller supporting Sliding and Mantling.
+                </p>
+                <p>
+                    I extended the standard <code>UCharacterMovementComponent</code> to include custom movement modes. 
+                    Using a strict Enum State Machine prevented invalid transitions (e.g., sliding while airborne).
                 </p>
                 
-                <div class="case-media">
-                    <!-- Placeholder GIF -->
-                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop" alt="Character Movement">
+                <!-- PLACEHOLDER FOR GIF -->
+                <div class="placeholder-media">
+                    <img src="https://placehold.co/800x450/111/444?text=GIF:+Character+Sliding+and+Mantling" alt="Movement GIF">
                 </div>
-
-                <div class="tech-box">
-                    <strong>The Solution: State Machines</strong><br><br>
-                    I extended <code>UCharacterMovementComponent</code> to handle custom movement modes. 
-                    Transitions are handled via a strict Enum State Machine. This prevents invalid states 
-                    (e.g., trying to slide while in mid-air).
-                </div>
-
-                <p>
-                    For mantling, I utilized a "Capsule Trace" followed by a "Sphere Trace" to detect ledge height 
-                    and depth, ensuring the player only mantles onto valid geometry.
+                
+                <p class="text-secondary">
+                    <em>Above: Debug view showing the capsule trace logic used to detect walkable ledges for the mantling system.</em>
                 </p>
             </section>
 
-            <!-- SECTION 2 -->
-            <section id="ui">
+            <!-- 2. UI -->
+            <section id="ui" class="system-section">
                 <h2>2. UI Architecture</h2>
                 <p>
-                    A common issue in Blueprint projects is UI data loss when levels change. 
-                    I implemented a <strong>GameInstanceSubsystem</strong> in C++ to act as the persistent data layer.
+                    <strong>Goal:</strong> Decouple UI Widgets from data storage to ensure settings persist across levels.
                 </p>
-
-                <div class="case-media">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop" alt="UI System">
-                </div>
-
                 <p>
-                    The UI Widgets act purely as a "View." When opened, they query the Subsystem for the current 
-                    Sensitivity or Volume settings. This creates a clean separation of concerns and makes debugging much easier.
+                    I implemented a custom C++ <strong>GameInstance Subsystem</strong>. The UI widgets act strictly as "Views," 
+                    querying the Subsystem ("Model") for data. This MVVM-style approach cleaned up the Blueprint graphs significantly.
                 </p>
-            </section>
 
-             <!-- SECTION 3 -->
-             <section id="materials">
-                <h2>3. Materials & Visuals</h2>
-                <p>
-                    I created a custom world grid material extended from third-party assets and HLSL-driven UI visual effects.
-                </p>
-                <div class="case-media">
-                     <img src="https://images.unsplash.com/photo-1620641788427-b9f4dbf2700f?q=80&w=1000&auto=format&fit=crop" alt="Materials">
+                <!-- PLACEHOLDER FOR IMAGE -->
+                <div class="placeholder-media">
+                    <img src="https://placehold.co/800x450/111/444?text=IMAGE:+Settings+Menu+Logic+(Blueprint+Graph)" alt="UI Graph">
                 </div>
             </section>
 
-            <!-- SECTION 4 -->
-            <section id="interaction">
-                <h2>4. Interaction System</h2>
+            <!-- 3. MATERIALS -->
+            <section id="materials" class="system-section">
+                <h2>3. Material Design & HLSL</h2>
                 <p>
-                    To avoid hard references (casting to specific actors), I utilized a Blueprint Interface 
-                    <code>BPI_Interact</code>.
+                    <strong>Goal:</strong> Create performant, grid-based world materials and HLSL UI effects.
                 </p>
-                
-                <div class="tech-box">
-                    <code>Event Interact(PlayerRef)</code><br>
-                    Any actor that implements this interface responds to the player's input. 
-                    This allows for a decoupled system where doors, switches, and pickups all share logic 
-                    without the player character needing to know what they are.
+                <p>
+                    I utilized a master material workflow to instantiate world grids efficiently. For the UI, I wrote custom HLSL 
+                    shaders for damage feedback effects, ensuring they were lightweight on the GPU.
+                </p>
+
+                <!-- PLACEHOLDER FOR IMAGE -->
+                <div class="placeholder-media">
+                    <img src="https://placehold.co/800x450/111/444?text=IMAGE:+Material+Instance+Examples" alt="Materials">
+                </div>
+            </section>
+
+            <!-- 4. SOUND -->
+            <section id="sound" class="system-section">
+                <h2>4. Sound Systems</h2>
+                <p>
+                    <strong>Goal:</strong> Immersive audio feedback based on physical surfaces.
+                </p>
+                <p>
+                    The system performs a line trace downwards on every footstep AnimNotify. It reads the 
+                    <strong>Physical Material</strong> of the surface (Concrete, Dirt, Metal) and triggers the corresponding Sound Cue.
+                </p>
+
+                <!-- PLACEHOLDER FOR GIF -->
+                <div class="placeholder-media">
+                    <img src="https://placehold.co/800x450/111/444?text=GIF:+Sound+Debug+Traces" alt="Sound Debug">
+                </div>
+            </section>
+
+            <!-- 5. AI -->
+            <section id="ai" class="system-section">
+                <h2>5. AI Design</h2>
+                <p>
+                    <strong>Goal:</strong> Tactical enemy behavior using Behavior Trees and EQS.
+                </p>
+                <p>
+                    The AI utilizes a Behavior Tree with a custom Service for Line-of-Sight checking. 
+                    I used the Environment Query System (EQS) to allow the AI to find cover positions relative to the player.
+                </p>
+
+                <!-- PLACEHOLDER FOR GIF -->
+                <div class="placeholder-media">
+                    <img src="https://placehold.co/800x450/111/444?text=GIF:+AI+Behavior+Tree+Running" alt="AI Tree">
+                </div>
+            </section>
+
+            <!-- 6. INTERACTION -->
+            <section id="interaction" class="system-section">
+                <h2>6. Interaction Systems</h2>
+                <p>
+                    <strong>Goal:</strong> A generic, decoupled interaction system for all world objects.
+                </p>
+                <p>
+                    I created a <code>BPI_Interact</code> interface. The player character sends an interface message 
+                    to the actor under the crosshair. This removes the need to <code>Cast To</code> specific actor types, 
+                    preventing hard reference chains and reducing load times.
+                </p>
+
+                <!-- PLACEHOLDER FOR GIF -->
+                <div class="placeholder-media">
+                    <img src="https://placehold.co/800x450/111/444?text=GIF:+Interaction+System+in+Action" alt="Interaction GIF">
                 </div>
             </section>
 
         </main>
     </div>
 
-    <footer style="text-align: center; padding: 4rem 0; margin-top: 4rem; border-top: var(--border);">
-        <p style="color: var(--text-secondary);">Designed & Built by Lawrence Quick</p>
+    <!-- FOOTER -->
+    <footer style="text-align: center; padding: 4rem 0; margin-top: 4rem; border-top: var(--border); color: var(--text-secondary);">
+        <p>&copy; 2025 Lawrence Quick.</p>
     </footer>
 
 </body>

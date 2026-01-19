@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lawrence Quick | Unreal Engine Developer</title>
-    <!-- Fonts & Icons -->
+    <title>Lawrence Quick | Gameplay Systems Developer</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR (No Resume Button) -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo">LAWRENCE QUICK<span style="color:var(--text-accent)">.</span></a>
+            <a href="index.html" class="logo">Lawrence Quick</a>
             <div class="nav-links">
                 <a href="#work">Work</a>
                 <a href="#skills">Skills</a>
-                <a href="assets/docs/Lawrence_Quick_Resume.pdf" target="_blank" class="btn-resume">Resume</a>
+                <a href="#contact">Contact</a>
             </div>
         </div>
     </nav>
@@ -26,98 +24,105 @@
     <!-- HERO SECTION -->
     <header class="hero">
         <div class="hero-content">
-            <p class="text-mono">GAMEPLAY & SYSTEMS ENGINEER</p>
-            <h1>Building scalable <span class="text-gradient">game architecture</span> in Unreal Engine.</h1>
+            <!-- 1. The Specific "Dream Title" (Shelly's Advice) -->
+            <h1>Unreal Engine <span class="text-gradient">Gameplay Systems</span> Developer</h1>
+            
+            <!-- 2. Skills Up Front (Shelly's Advice: "Right at the top") -->
+            <div class="quick-stack">
+                <span class="stack-badge">Unreal Engine 5</span>
+                <span class="stack-badge">C++</span>
+                <span class="stack-badge">Blueprints</span>
+                <span class="stack-badge">System Architecture</span>
+                <span class="stack-badge">Git</span>
+            </div>
+
             <p>
-                I specialize in C++, Blueprint architecture, and robust gameplay systems. 
-                Focused on long-term project maintainability and clean debugging.
+                I build scalable, modular gameplay architectures. 
+                Focusing on clean debugging, state management, and long-term project maintainability.
             </p>
-            <a href="#work" class="cta-btn">View Featured Work</a>
+            
+            <a href="#work" class="btn-primary">View Featured Project</a>
+            <!-- Resume Link moved here as secondary text link -->
+            <div style="margin-top: 1rem;">
+                <a href="assets/docs/Lawrence_Quick_Resume.pdf" target="_blank" style="font-size: 0.9rem; color: var(--text-secondary); text-decoration: underline;">Download Resume (PDF)</a>
+            </div>
         </div>
     </header>
 
-    <!-- SKILLS SECTION -->
+    <!-- SKILLS GRID (The "List" Shelly asked for) -->
     <section id="skills" class="section-padding">
-        <h2 style="text-align: center; margin-bottom: 3rem;">Technical Arsenal</h2>
+        <h2 style="text-align: center;">Technical Competencies</h2>
         <div class="skills-grid">
             
-            <!-- Skill 1 -->
             <div class="skill-card">
-                <div class="skill-icon"><i class="fa-brands fa-unity"></i></div> <!-- Using Unity icon as generic 'engine' placeholder if UE icon missing -->
-                <h3>Unreal Engine 5</h3>
+                <h3>Core Tech</h3>
                 <ul>
-                    <li>Blueprint Architecture</li>
-                    <li>C++ Integration</li>
-                    <li>UMG / UI Systems</li>
-                    <li>Animation Blueprints</li>
+                    <li><span>Unreal Engine 5 & 4</span></li>
+                    <li><span>C++ (Gameplay)</span></li>
+                    <li><span>Blueprint Scripting</span></li>
+                    <li><span>UMG / UI Logic</span></li>
                 </ul>
             </div>
 
-            <!-- Skill 2 -->
             <div class="skill-card">
-                <div class="skill-icon"><i class="fa-solid fa-code"></i></div>
-                <h3>Gameplay Systems</h3>
+                <h3>Systems Design</h3>
                 <ul>
-                    <li>Character Movement</li>
-                    <li>Interaction Interfaces</li>
-                    <li>Save/Load Persistence</li>
-                    <li>AI Behavior Trees</li>
+                    <li><span>Character State Machines</span></li>
+                    <li><span>Interaction Interfaces</span></li>
+                    <li><span>Data Persistence (Save/Load)</span></li>
+                    <li><span>AI Behavior Trees</span></li>
                 </ul>
             </div>
 
-            <!-- Skill 3 -->
             <div class="skill-card">
-                <div class="skill-icon"><i class="fa-solid fa-bug"></i></div>
-                <h3>Tools & Debugging</h3>
+                <h3>Workflow</h3>
                 <ul>
-                    <li>Visual Studio 2022</li>
-                    <li>Git / Source Control</li>
-                    <li>Profiling & Optimization</li>
-                    <li>Technical Documentation</li>
+                    <li><span>Visual Studio 2022</span></li>
+                    <li><span>Git / Source Control</span></li>
+                    <li><span>Profiling / Debugging</span></li>
+                    <li><span>Technical Documentation</span></li>
                 </ul>
             </div>
 
         </div>
     </section>
 
-    <!-- FEATURED WORK -->
+    <!-- PROJECT WORK (The Shelly "GIF + Bullet Points" Model) -->
     <section id="work" class="section-padding">
-        <h2 style="margin-bottom: 2rem;">Selected Projects</h2>
+        <h2 style="margin-bottom: 2rem;">Featured Case Study</h2>
         
-        <!-- PROJECT: ASIMBLY -->
-        <article class="project-showcase">
-            <div class="project-image">
-                <!-- Placeholder: Sci-fi corridor to represent FPS -->
-                <img src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?q=80&w=1000&auto=format&fit=crop" alt="Asimbly Environment">
+        <article class="project-card">
+            <!-- 3. The GIF Placeholder (Show, Don't Just Tell) -->
+            <div class="project-gif-container">
+                <img src="https://placehold.co/800x600/111/444?text=GIF:+Gameplay+Loop+(Shooting/Movement)" alt="Asimbly Gameplay GIF">
             </div>
-            <div class="project-details">
-                <div class="tech-stack">
-                    <span class="tech-pill">UE5</span>
-                    <span class="tech-pill">C++</span>
-                    <span class="tech-pill">FPS Systems</span>
-                </div>
-                <h3>Asimbly</h3>
-                <p>
-                    A collaborative FPS project focusing on modular gameplay systems. 
-                    I designed the state-machine based character controller, the interaction interface, 
-                    and the persistent MVVM-style UI architecture.
-                </p>
-                <div style="display:flex; gap: 1rem;">
-                    <a href="projects/asimbly.html" class="cta-btn">Case Study</a>
-                    <a href="#" class="btn-outline"><i class="fa-brands fa-github"></i> Source</a>
+            
+            <div class="project-info">
+                <h3 class="project-title">Asimbly</h3>
+                <span class="project-role">GAMEPLAY & SYSTEMS ENGINEER | UE5</span>
+                
+                <!-- 4. Specific Bullet Points (Shelly's Advice) -->
+                <ul class="contribution-list">
+                    <li>Engineered a custom <strong>Character State Machine</strong> in C++ to handle complex transitions between Sliding, Mantling, and Walking without physics conflicts.</li>
+                    <li>Architected a decoupled <strong>UI System</strong> using GameInstance Subsystems, allowing settings to persist across level loads.</li>
+                    <li>Implemented a modular <strong>Interaction Interface</strong> that allows players to interact with any world object without hard casting dependencies.</li>
+                </ul>
+
+                <div>
+                    <a href="projects/asimbly.html" class="btn-text">Read Full Technical Breakdown &rarr;</a>
                 </div>
             </div>
         </article>
 
     </section>
 
-    <!-- FOOTER -->
-    <footer style="text-align: center; padding: 4rem 0; border-top: var(--border); background: var(--bg-surface);">
-        <p style="color: var(--text-secondary);">&copy; 2025 Lawrence Quick.</p>
-        <div style="margin-top: 1rem;">
-            <a href="#" style="margin: 0 1rem;"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
-            <a href="#" style="margin: 0 1rem;"><i class="fa-brands fa-github"></i> GitHub</a>
-            <a href="mailto:email@example.com" style="margin: 0 1rem;"><i class="fa-solid fa-envelope"></i> Email</a>
+    <!-- CONTACT / FOOTER -->
+    <footer id="contact" style="text-align: center; padding: 4rem 0; background: var(--bg-surface); border-top: var(--border);">
+        <h3 style="margin-bottom: 1rem;">Ready to Collaborate?</h3>
+        <p style="margin-bottom: 2rem;">I am currently available for remote Junior/Mid-level roles.</p>
+        <a href="mailto:your.email@example.com" class="btn-primary">Contact Me</a>
+        <div style="margin-top: 3rem; color: var(--text-secondary); font-size: 0.9rem;">
+            &copy; 2025 Lawrence Quick. Built with HTML/CSS.
         </div>
     </footer>
 
