@@ -81,16 +81,20 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
    5. HERO SECTION (Bold & Specific)
    ========================================= */
 .hero {
-    min-height: 85vh; display: flex; align-items: center; justify-content: center;
+    /* CHANGED: Reduced min-height from 85vh to 50vh to pull Skills up */
+    min-height: 50vh; 
+    display: flex; align-items: center; justify-content: center;
     text-align: center; padding: 0 2rem;
     background: radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.05), transparent 40%);
+    margin-top: var(--header-height); /* Ensure it doesn't hide behind nav */
+    padding-top: 4rem;
 }
 
 .hero-content { max-width: 900px; }
 .hero h1 { margin-bottom: 1.5rem; }
 .hero p { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto; }
 
-/* The "Quick Stack" Bar - Shelly's Advice */
+/* The "Quick Stack" Bar */
 .quick-stack {
     display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;
 }
@@ -103,14 +107,27 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 .btn-primary {
     display: inline-block; background: var(--text-accent); color: #fff;
     padding: 1rem 2.5rem; border-radius: 6px; font-weight: 600;
-    transition: transform 0.2s;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
 }
-.btn-primary:hover { transform: translateY(-2px); background: #2563eb; }
+.btn-primary:hover { 
+    transform: translateY(-2px); 
+    background: #2563eb; 
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* NEW: Helper to make a button fill the container */
+.btn-full {
+    width: 100%;
+    text-align: center;
+    display: block;
+}
 
 /* =========================================
    6. SKILLS GRID
    ========================================= */
-.section-padding { padding: 6rem 2rem; max-width: var(--max-width); margin: 0 auto; }
+/* CHANGED: Reduced padding from 6rem to 3rem to compact the layout */
+.section-padding { padding: 3rem 2rem; max-width: var(--max-width); margin: 0 auto; }
 
 .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
 
@@ -124,12 +141,12 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 }
 
 /* =========================================
-   7. PROJECT CARD (The Shelly Model)
+   7. PROJECT CARD
    ========================================= */
 .project-card {
     display: grid; grid-template-columns: 1.5fr 1fr; gap: 3rem;
     background: var(--bg-card); border: var(--border);
-    border-radius: 12px; overflow: hidden; margin-bottom: 4rem;
+    border-radius: 12px; overflow: hidden; margin-bottom: 2rem; /* Reduced margin */
 }
 
 .project-gif-container {

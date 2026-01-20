@@ -24,10 +24,10 @@
     <!-- HERO SECTION -->
     <header class="hero">
         <div class="hero-content">
-            <!-- 1. The Specific "Dream Title" (Shelly's Advice) -->
+            <!-- 1. The Specific "Dream Title" -->
             <h1>Unreal Engine <span class="text-gradient">Gameplay Systems</span> Developer</h1>
             
-            <!-- 2. Skills Up Front (Shelly's Advice: "Right at the top") -->
+            <!-- 2. Skills Up Front -->
             <div class="quick-stack">
                 <span class="stack-badge">Unreal Engine 5</span>
                 <span class="stack-badge">C++</span>
@@ -41,15 +41,18 @@
                 Focusing on clean debugging, state management, and long-term project maintainability.
             </p>
             
+            <!-- Primary CTA -->
             <a href="#work" class="btn-primary">View Featured Project</a>
-            <!-- Resume Link moved here as secondary text link -->
+            
+            <!-- Resume Link -->
             <div style="margin-top: 1rem;">
                 <a href="assets/docs/Lawrence_Quick_Resume.pdf" target="_blank" style="font-size: 0.9rem; color: var(--text-secondary); text-decoration: underline;">Download Resume (PDF)</a>
             </div>
         </div>
     </header>
 
-    <!-- SKILLS GRID (The "List" Shelly asked for) -->
+    <!-- SKILLS GRID -->
+    <!-- Moved visually higher via CSS adjustments to .hero and .section-padding -->
     <section id="skills" class="section-padding">
         <h2 style="text-align: center;">Technical Competencies</h2>
         <div class="skills-grid">
@@ -87,20 +90,16 @@
         </div>
     </section>
 
-    <!-- PROJECT WORK (The Shelly "GIF + Bullet Points" Model) -->
+    <!-- PROJECT WORK -->
     <section id="work" class="section-padding">
         <h2 style="margin-bottom: 2rem;">Featured Case Study</h2>
         
         <article class="project-card">
-            <!-- 3. HTML5 Video Replacement for GIF -->
+            <!-- HTML5 Video Replacement for GIF -->
             <div class="project-gif-container">
-                <!-- 
-                   TIP: Add a 'poster' attribute to show an image while video loads
-                   Example: poster="assets/images/asimbly-poster.jpg"
-                -->
                 <video autoplay loop muted playsinline>
-                    <!-- Update the src to your actual file path in assets/videos/ -->
-                    <source src="..//assets/videos/Asimbly_Shooting_Movement_01.mp4" type="video/mp4">
+                    <!-- Fixed Path: Removed '..//' as index.html is in root -->
+                    <source src="assets/videos/Asimbly_Shooting_Movement_01.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
@@ -109,15 +108,17 @@
                 <h3 class="project-title">Asimbly</h3>
                 <span class="project-role">GAMEPLAY & SYSTEMS ENGINEER | UE5</span>
                 
-                <!-- 4. Specific Bullet Points (Shelly's Advice) -->
                 <ul class="contribution-list">
                     <li>Engineered a custom <strong>Character State Machine</strong> in C++ to handle complex transitions between Sliding, Mantling, and Walking without physics conflicts.</li>
                     <li>Architected a decoupled <strong>UI System</strong> using GameInstance Subsystems, allowing settings to persist across level loads.</li>
                     <li>Implemented a modular <strong>Interaction Interface</strong> that allows players to interact with any world object without hard casting dependencies.</li>
                 </ul>
 
-                <div>
-                    <a href="projects/asimbly.html" class="btn-text">Read Full Technical Breakdown &rarr;</a>
+                <!-- UPDATED: Replaced text link with a high-visibility button -->
+                <div style="margin-top: auto;">
+                    <a href="projects/asimbly.html" class="btn-primary btn-full">
+                        View Technical Breakdown &rarr;
+                    </a>
                 </div>
             </div>
         </article>
