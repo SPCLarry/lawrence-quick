@@ -81,5 +81,3 @@ DerivedDataCache/*
 wireframe-game/lib/*
 .env.local
 /node_modules
-/assets/images
-/assets/videos
