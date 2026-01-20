@@ -92,9 +92,17 @@
         <h2 style="margin-bottom: 2rem;">Featured Case Study</h2>
         
         <article class="project-card">
-            <!-- 3. The GIF Placeholder (Show, Don't Just Tell) -->
+            <!-- 3. HTML5 Video Replacement for GIF -->
             <div class="project-gif-container">
-                <img src="https://placehold.co/800x600/111/444?text=GIF:+Gameplay+Loop+(Shooting/Movement)" alt="Asimbly Gameplay GIF">
+                <!-- 
+                   TIP: Add a 'poster' attribute to show an image while video loads
+                   Example: poster="assets/images/asimbly-poster.jpg"
+                -->
+                <video autoplay loop muted playsinline>
+                    <!-- Update the src to your actual file path in assets/videos/ -->
+                    <source src="..//assets/videos/Asimbly_Shooting_Movement_01.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
             </div>
             
             <div class="project-info">

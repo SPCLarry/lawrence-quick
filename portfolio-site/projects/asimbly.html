@@ -30,9 +30,9 @@
             </p>
         </div>
         
-        <!-- MAIN HEADER IMAGE/GIF PLACEHOLDER -->
-        <div style="max-width: 1000px; margin: 0 auto; height: 400px; background: #111; border: var(--border); border-radius: 8px; overflow: hidden;">
-            <img src="https://placehold.co/1000x400/111/444?text=IMAGE:+Wide+Environment+Shot+of+Asimbly" alt="Asimbly Banner">
+        <!-- MAIN HEADER IMAGE -->
+        <div style="max-width: 1000px; margin: 0 auto; height: auto; background: #111; border: var(--border); border-radius: 8px; overflow: hidden;">
+            <img src="..//assets/images/Asimbly_Cover_01.jpeg" alt="Asimbly Banner">
         </div>
     </header>
 
@@ -47,9 +47,8 @@
                     <a href="#character" class="toc-link">1. Character Controller</a>
                     <a href="#ui" class="toc-link">2. UI Architecture</a>
                     <a href="#materials" class="toc-link">3. Material Design</a>
-                    <a href="#sound" class="toc-link">4. Audio Systems</a>
-                    <a href="#ai" class="toc-link">5. AI Behavior</a>
-                    <a href="#interaction" class="toc-link">6. Interaction Logic</a>
+                    <a href="#ai" class="toc-link">4. AI Behavior</a>
+                    <a href="#interaction" class="toc-link">5. Interaction Logic</a>
                 </nav>
             </div>
         </aside>
@@ -68,9 +67,12 @@
                     Using a strict Enum State Machine prevented invalid transitions (e.g., sliding while airborne).
                 </p>
                 
-                <!-- PLACEHOLDER FOR GIF -->
+                <!-- VIDEO: Character Movement -->
                 <div class="placeholder-media">
-                    <img src="https://placehold.co/800x450/111/444?text=GIF:+Character+Sliding+and+Mantling" alt="Movement GIF">
+                    <video autoplay loop muted playsinline>
+                        <source src="../assets/videos/Asimbly_Character_Overview_01.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
                 
                 <p class="text-secondary">
@@ -86,12 +88,12 @@
                 </p>
                 <p>
                     I implemented a custom C++ <strong>GameInstance Subsystem</strong>. The UI widgets act strictly as "Views," 
-                    querying the Subsystem ("Model") for data. This MVVM-style approach cleaned up the Blueprint graphs significantly.
+                    querying the Subsystem ("Model") for data. This MVVM-style approach cleaned up the Blueprint graphs significantly and prevents blueprint compilation errors since the structs are defined within C++.
                 </p>
 
-                <!-- PLACEHOLDER FOR IMAGE -->
+                <!-- IMAGE: Blueprint Graph (Static images are often better for reading nodes) -->
                 <div class="placeholder-media">
-                    <img src="https://placehold.co/800x450/111/444?text=IMAGE:+Settings+Menu+Logic+(Blueprint+Graph)" alt="UI Graph">
+                    <img src="..//assets/images/Asimbly_UI_Settings.png" alt="UI Graph">
                 </div>
             </section>
 
@@ -106,49 +108,35 @@
                     shaders for damage feedback effects, ensuring they were lightweight on the GPU.
                 </p>
 
-                <!-- PLACEHOLDER FOR IMAGE -->
+                <!-- IMAGE: Materials -->
                 <div class="placeholder-media">
-                    <img src="https://placehold.co/800x450/111/444?text=IMAGE:+Material+Instance+Examples" alt="Materials">
+                    <img src="..//assets/images/Asimbly_HLSL_01.png" alt="Materials">
                 </div>
             </section>
 
-            <!-- 4. SOUND -->
-            <section id="sound" class="system-section">
-                <h2>4. Sound Systems</h2>
-                <p>
-                    <strong>Goal:</strong> Immersive audio feedback based on physical surfaces.
-                </p>
-                <p>
-                    The system performs a line trace downwards on every footstep AnimNotify. It reads the 
-                    <strong>Physical Material</strong> of the surface (Concrete, Dirt, Metal) and triggers the corresponding Sound Cue.
-                </p>
-
-                <!-- PLACEHOLDER FOR GIF -->
-                <div class="placeholder-media">
-                    <img src="https://placehold.co/800x450/111/444?text=GIF:+Sound+Debug+Traces" alt="Sound Debug">
-                </div>
-            </section>
-
-            <!-- 5. AI -->
+            <!-- 4. AI -->
             <section id="ai" class="system-section">
-                <h2>5. AI Design</h2>
+                <h2>4. AI Design</h2>
                 <p>
                     <strong>Goal:</strong> Tactical enemy behavior using Behavior Trees and EQS.
                 </p>
                 <p>
                     The AI utilizes a Behavior Tree with a custom Service for Line-of-Sight checking. 
-                    I used the Environment Query System (EQS) to allow the AI to find cover positions relative to the player.
+                    I used the Environment Query System (EQS) to allow the AI to find optimal range positions relative to the player.
                 </p>
 
-                <!-- PLACEHOLDER FOR GIF -->
+                <!-- VIDEO: AI Behavior -->
                 <div class="placeholder-media">
-                    <img src="https://placehold.co/800x450/111/444?text=GIF:+AI+Behavior+Tree+Running" alt="AI Tree">
+                    <video autoplay loop muted playsinline>
+                        <source src="../assets/videos/Asimbly_BehaviorTree_01.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
             </section>
 
-            <!-- 6. INTERACTION -->
+            <!-- 5. INTERACTION -->
             <section id="interaction" class="system-section">
-                <h2>6. Interaction Systems</h2>
+                <h2>5. Interaction Systems</h2>
                 <p>
                     <strong>Goal:</strong> A generic, decoupled interaction system for all world objects.
                 </p>
@@ -158,9 +146,12 @@
                     preventing hard reference chains and reducing load times.
                 </p>
 
-                <!-- PLACEHOLDER FOR GIF -->
+                <!-- VIDEO: Interaction -->
                 <div class="placeholder-media">
-                    <img src="https://placehold.co/800x450/111/444?text=GIF:+Interaction+System+in+Action" alt="Interaction GIF">
+                    <video autoplay loop muted playsinline>
+                        <source src="../assets/videos/Asimbly_Interaction_System_01.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
             </section>
 

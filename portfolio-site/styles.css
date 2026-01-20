@@ -34,7 +34,12 @@ body {
 
 a { text-decoration: none; color: inherit; transition: 0.3s; }
 ul { list-style: none; }
-img, video { max-width: 100%; display: block; }
+
+/* Global Media Reset */
+img, video { 
+    max-width: 100%; 
+    display: block; 
+}
 
 /* =========================================
    3. TYPOGRAPHY
@@ -131,7 +136,15 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     background: #000; min-height: 350px; position: relative;
     border-right: var(--border); display: flex; align-items: center; justify-content: center;
 }
-.project-gif-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+
+/* Handle both images and videos in the project card */
+.project-gif-container img, 
+.project-gif-container video { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    opacity: 0.9; 
+}
 
 .project-info { padding: 3rem 2rem; display: flex; flex-direction: column; justify-content: center; }
 .project-title { font-size: 2rem; margin-bottom: 0.5rem; color: #fff; }
@@ -156,10 +169,19 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 .toc-link:hover { color: var(--text-accent); padding-left: 5px; }
 
 .system-section { margin-bottom: 5rem; border-top: 1px solid #222; padding-top: 3rem; }
+
+/* Media Container */
 .placeholder-media {
     width: 100%; background: #0e0e0e; border: 1px solid #333;
     display: flex; align-items: center; justify-content: center;
     margin: 2rem 0; overflow: hidden; border-radius: 6px;
+}
+/* Ensure video/img fills the case study containers */
+.placeholder-media img,
+.placeholder-media video {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 /* Mobile */
