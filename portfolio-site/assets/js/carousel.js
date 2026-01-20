@@ -1,83 +1,144 @@
 document.addEventListener("DOMContentLoaded", function() {
     
-    // Find all containers that should be carousels
-    const carousels = document.querySelectorAll('.media-carousel');
-
-    carousels.forEach((carousel, index) => {
-        setupCarousel(carousel, index);
+    // 1. Initialize Page Carousels
+    const pageCarousels = document.querySelectorAll('.media-carousel:not(.modal-style)');
+    
+    pageCarousels.forEach((container) => {
+        // Collect raw media items (img/video) before we modify DOM
+        const rawMediaItems = Array.from(container.children);
+        
+        // Initialize the standard carousel
+        initCarousel(container, rawMediaItems);
+        
+        // Add CLICK listener to open Modal
+        // We attach this to the *container* but delegate logic to finding current index
+        // Or simpler: The initCarousel creates slides. We attach click to slides.
     });
 
-    function setupCarousel(container, id) {
-        // 1. Get all raw media items (img/video) inside the container
-        const rawMedia = Array.from(container.children);
-        
-        // If empty or only 1 item, we might not need buttons, but let's standardize
-        if (rawMedia.length === 0) return;
+    // --- Modal Elements ---
+    const modal = document.getElementById('media-modal');
+    const modalCloseBtn = document.querySelector('.modal-close');
+    const modalRoot = document.getElementById('modal-carousel-root');
 
-        // 2. Build the Track Structure
+    // --- Helper: Core Carousel Logic ---
+    // container: The wrapper div
+    // mediaSource: Array of DOM Nodes (img/video) to put inside
+    // startIndex: Which slide to show first
+    // isModal: Boolean to modify behavior (e.g. click to open modal vs do nothing)
+    function initCarousel(container, mediaSource, startIndex = 0, isModal = false) {
+        
+        container.innerHTML = ''; // Clear existing (safe reset)
+
+        if (mediaSource.length === 0) return;
+
+        // 1. Build Track
         const track = document.createElement('div');
         track.classList.add('carousel-track');
 
-        // 3. Wrap each media item in a slide div and append to track
-        rawMedia.forEach(media => {
+        mediaSource.forEach((mediaItem, index) => {
             const slide = document.createElement('div');
             slide.classList.add('carousel-slide');
-            
-            // Ensure videos loop/mute/play if desired (standardize behavior)
-            if (media.tagName === 'VIDEO') {
-                media.setAttribute('playsinline', '');
-                // We keep original attributes (autoplay/muted) from HTML
+
+            // Clone the media item so we don't steal it from original location
+            // If it's the modal, we are cloning from the page. 
+            // If it's the page, we are just using the elements found in DOM.
+            const mediaClone = mediaItem.cloneNode(true);
+
+            // Ensure video attributes are standard
+            if (mediaClone.tagName === 'VIDEO') {
+                mediaClone.setAttribute('playsinline', '');
+                // If in modal, maybe we want controls? or just autoplay
+                // let's stick to autoplay loop for consistency
             }
-            
-            slide.appendChild(media);
+
+            slide.appendChild(mediaClone);
             track.appendChild(slide);
+
+            // CLICK EVENT: If this is a Page Carousel, clicking opens Modal
+            if (!isModal) {
+                slide.addEventListener('click', () => {
+                    openModal(mediaSource, index);
+                });
+            }
         });
 
-        // Clear container and append track
-        container.innerHTML = '';
         container.appendChild(track);
 
-        // 4. Create Navigation Buttons (Only if more than 1 slide)
-        if (rawMedia.length > 1) {
+        // 2. Navigation
+        let currentIndex = startIndex;
+        const maxIndex = mediaSource.length - 1;
+
+        const updateTrack = () => {
+            const translateX = -(currentIndex * 100);
+            track.style.transform = `translateX(${translateX}%)`;
+        };
+        
+        // Run once to set initial position
+        updateTrack();
+
+        // Only add buttons if > 1 item
+        if (mediaSource.length > 1) {
             const prevBtn = document.createElement('button');
-            prevBtn.innerHTML = '&larr;'; // Left Arrow
+            prevBtn.innerHTML = '&larr;';
             prevBtn.classList.add('carousel-btn', 'prev');
             
             const nextBtn = document.createElement('button');
-            nextBtn.innerHTML = '&rarr;'; // Right Arrow
+            nextBtn.innerHTML = '&rarr;';
             nextBtn.classList.add('carousel-btn', 'next');
 
             container.appendChild(prevBtn);
             container.appendChild(nextBtn);
 
-            // 5. Logic
-            let currentIndex = 0;
-            const maxIndex = rawMedia.length - 1;
-
-            const updateCarousel = () => {
-                const translateX = -(currentIndex * 100);
-                track.style.transform = `translateX(${translateX}%)`;
-            };
-
+            // Stop click propagation so clicking arrow doesn't open modal
             prevBtn.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevent jumpy behavior if inside anchor (unlikely)
-                if (currentIndex > 0) {
-                    currentIndex--;
-                } else {
-                    currentIndex = maxIndex; // Loop back to end
-                }
-                updateCarousel();
+                e.preventDefault();
+                e.stopPropagation(); 
+                if (currentIndex > 0) currentIndex--;
+                else currentIndex = maxIndex;
+                updateTrack();
             });
 
             nextBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (currentIndex < maxIndex) {
-                    currentIndex++;
-                } else {
-                    currentIndex = 0; // Loop back to start
-                }
-                updateCarousel();
+                e.stopPropagation();
+                if (currentIndex < maxIndex) currentIndex++;
+                else currentIndex = 0;
+                updateTrack();
             });
         }
     }
+
+    // --- Modal Logic ---
+
+    function openModal(originalMediaItems, clickedIndex) {
+        // 1. Show Modal
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Disable scroll on body
+
+        // 2. Initialize Carousel inside Modal
+        // We pass true for 'isModal' to prevent recursion (clicking modal slide shouldn't open new modal)
+        initCarousel(modalRoot, originalMediaItems, clickedIndex, true);
+    }
+
+    function closeModal() {
+        modal.classList.add('hidden');
+        document.body.style.overflow = ''; // Re-enable scroll
+        modalRoot.innerHTML = ''; // Destroy content (stops videos)
+    }
+
+    modalCloseBtn.addEventListener('click', closeModal);
+
+    // Close on clicking outside content (optional, acts as click-off)
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Close on Escape Key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
 });

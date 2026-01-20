@@ -177,7 +177,7 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 
 /* 
    =========================================
-   9. CUSTOM CAROUSEL STYLES 
+   9. CAROUSEL & MODAL STYLES 
    =========================================
 */
 .media-carousel {
@@ -188,7 +188,7 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     border-radius: 8px;
     border: var(--border);
     background: #0e0e0e;
-    aspect-ratio: 16 / 9; /* Default aspect ratio */
+    aspect-ratio: 16 / 9;
 }
 
 .carousel-track {
@@ -205,13 +205,14 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     align-items: center;
     justify-content: center;
     background: #000;
+    cursor: zoom-in; /* Indicate clickable for modal */
 }
 
 .carousel-slide img,
 .carousel-slide video {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Keep aspect ratio inside the container */
+    object-fit: contain;
 }
 
 /* Navigation Buttons */
@@ -230,7 +231,7 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0; /* Hidden by default */
+    opacity: 0;
     transition: all 0.3s ease;
     z-index: 10;
 }
@@ -245,9 +246,66 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 .carousel-btn.prev { left: 15px; }
 .carousel-btn.next { right: 15px; }
 
-/* Show buttons when hovering over the carousel container */
-.media-carousel:hover .carousel-btn {
+.media-carousel:hover .carousel-btn { opacity: 1; }
+
+/* --- MODAL --- */
+.modal {
+    position: fixed;
+    inset: 0; /* top/left/right/bottom: 0 */
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 2000; /* Above Navbar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.modal.hidden {
+    opacity: 0;
+    pointer-events: none;
+    display: none; /* remove from layout */
+}
+
+.modal-content {
+    width: 90vw;
+    height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Override carousel style inside modal */
+.media-carousel.modal-style {
+    margin: 0;
+    border: none;
+    background: transparent;
+    height: 100%;
+    aspect-ratio: unset; /* Fill container */
+}
+
+/* Cursor inside modal shouldn't show zoom-in */
+.media-carousel.modal-style .carousel-slide {
+    cursor: default; 
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 3rem;
+    cursor: pointer;
+    z-index: 2001;
+    transition: transform 0.2s;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    transform: scale(1.1);
+    color: var(--text-accent);
 }
 
 /* Mobile */
@@ -259,6 +317,6 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     .toc-sticky { display: none; }
     .quick-stack { display: none; }
     
-    /* Ensure buttons are visible on mobile since there is no 'hover' */
     .media-carousel .carousel-btn { opacity: 0.5; }
+    .modal-content { width: 100vw; height: 70vh; }
 }

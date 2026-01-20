@@ -94,7 +94,6 @@
                     querying the Subsystem ("Model") for data. This MVVM-style approach cleaned up the Blueprint graphs significantly.
                 </p>
 
-                <!-- CAROUSEL: Single Image (Still works as carousel) -->
                 <div class="media-carousel">
                     <img src="../assets/images/Asimbly_UI_Settings.png" alt="UI Graph">
                     <img src="../assets/images/UI_01.png" alt="UI Settings">
@@ -173,6 +172,15 @@
     <footer style="text-align: center; padding: 4rem 0; margin-top: 4rem; border-top: var(--border); color: var(--text-secondary);">
         <p>&copy; 2025 Lawrence Quick.</p>
     </footer>
+
+    <!-- MODAL (Hidden by default) -->
+    <div id="media-modal" class="modal hidden">
+        <button class="modal-close">&times;</button>
+        <div class="modal-content">
+            <!-- Dynamic Content Injected Here by JS -->
+            <div id="modal-carousel-root" class="media-carousel modal-style"></div>
+        </div>
+    </div>
 
     <!-- CAROUSEL SCRIPT -->
     <script src="../assets/js/carousel.js"></script>
