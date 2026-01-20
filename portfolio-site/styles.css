@@ -81,12 +81,11 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
    5. HERO SECTION (Bold & Specific)
    ========================================= */
 .hero {
-    /* CHANGED: Reduced min-height from 85vh to 50vh to pull Skills up */
     min-height: 50vh; 
     display: flex; align-items: center; justify-content: center;
     text-align: center; padding: 0 2rem;
     background: radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.05), transparent 40%);
-    margin-top: var(--header-height); /* Ensure it doesn't hide behind nav */
+    margin-top: var(--header-height);
     padding-top: 4rem;
 }
 
@@ -116,17 +115,11 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-/* NEW: Helper to make a button fill the container */
-.btn-full {
-    width: 100%;
-    text-align: center;
-    display: block;
-}
+.btn-full { width: 100%; text-align: center; display: block; }
 
 /* =========================================
    6. SKILLS GRID
    ========================================= */
-/* CHANGED: Reduced padding from 6rem to 3rem to compact the layout */
 .section-padding { padding: 3rem 2rem; max-width: var(--max-width); margin: 0 auto; }
 
 .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
@@ -146,7 +139,7 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 .project-card {
     display: grid; grid-template-columns: 1.5fr 1fr; gap: 3rem;
     background: var(--bg-card); border: var(--border);
-    border-radius: 12px; overflow: hidden; margin-bottom: 2rem; /* Reduced margin */
+    border-radius: 12px; overflow: hidden; margin-bottom: 2rem; 
 }
 
 .project-gif-container {
@@ -154,20 +147,15 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     border-right: var(--border); display: flex; align-items: center; justify-content: center;
 }
 
-/* Handle both images and videos in the project card */
 .project-gif-container img, 
 .project-gif-container video { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    opacity: 0.9; 
+    width: 100%; height: 100%; object-fit: cover; opacity: 0.9; 
 }
 
 .project-info { padding: 3rem 2rem; display: flex; flex-direction: column; justify-content: center; }
 .project-title { font-size: 2rem; margin-bottom: 0.5rem; color: #fff; }
 .project-role { font-family: var(--font-code); color: var(--text-accent); font-size: 0.9rem; margin-bottom: 1.5rem; display: block; }
 
-/* The specific bullet points */
 .contribution-list { list-style: disc; margin-left: 1.5rem; margin-bottom: 2rem; }
 .contribution-list li { margin-bottom: 0.8rem; color: #ccc; line-height: 1.5; }
 
@@ -187,18 +175,79 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 
 .system-section { margin-bottom: 5rem; border-top: 1px solid #222; padding-top: 3rem; }
 
-/* Media Container */
-.placeholder-media {
-    width: 100%; background: #0e0e0e; border: 1px solid #333;
-    display: flex; align-items: center; justify-content: center;
-    margin: 2rem 0; overflow: hidden; border-radius: 6px;
-}
-/* Ensure video/img fills the case study containers */
-.placeholder-media img,
-.placeholder-media video {
+/* 
+   =========================================
+   9. CUSTOM CAROUSEL STYLES 
+   =========================================
+*/
+.media-carousel {
+    position: relative;
     width: 100%;
-    height: auto;
-    display: block;
+    margin: 2rem 0;
+    overflow: hidden;
+    border-radius: 8px;
+    border: var(--border);
+    background: #0e0e0e;
+    aspect-ratio: 16 / 9; /* Default aspect ratio */
+}
+
+.carousel-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+}
+
+.carousel-slide img,
+.carousel-slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Keep aspect ratio inside the container */
+}
+
+/* Navigation Buttons */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; /* Hidden by default */
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-btn:hover {
+    background: var(--text-accent);
+    color: #fff;
+    border-color: var(--text-accent);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn.prev { left: 15px; }
+.carousel-btn.next { right: 15px; }
+
+/* Show buttons when hovering over the carousel container */
+.media-carousel:hover .carousel-btn {
+    opacity: 1;
 }
 
 /* Mobile */
@@ -208,5 +257,8 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     .project-gif-container { border-right: none; border-bottom: var(--border); min-height: 250px; }
     .case-grid { grid-template-columns: 1fr; }
     .toc-sticky { display: none; }
-    .quick-stack { display: none; } /* Hide stack on very small screens to save space */
+    .quick-stack { display: none; }
+    
+    /* Ensure buttons are visible on mobile since there is no 'hover' */
+    .media-carousel .carousel-btn { opacity: 0.5; }
 }

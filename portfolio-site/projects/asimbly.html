@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <!-- NAVBAR (Consistent with Home, no Resume button) -->
+    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="../index.html" class="logo">Lawrence Quick</a>
@@ -32,7 +32,7 @@
         
         <!-- MAIN HEADER IMAGE -->
         <div style="max-width: 1000px; margin: 0 auto; height: auto; background: #111; border: var(--border); border-radius: 8px; overflow: hidden;">
-            <img src="..//assets/images/Asimbly_Cover_01.jpeg" alt="Asimbly Banner">
+            <img src="../assets/images/Asimbly_Cover_01.jpeg" alt="Asimbly Banner">
         </div>
     </header>
 
@@ -67,16 +67,19 @@
                     Using a strict Enum State Machine prevented invalid transitions (e.g., sliding while airborne).
                 </p>
                 
-                <!-- VIDEO: Character Movement -->
-                <div class="placeholder-media">
+                <!-- CAROUSEL: Mixed Media Example -->
+                <div class="media-carousel">
+                    <!-- Slide 1: Video -->
                     <video autoplay loop muted playsinline>
-                        <source src="../assets/videos/Asimbly_Character_Overview_01.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
+                        <source src="../assets/videos/Asimbly_Climb_01.mp4" type="video/mp4">
+                    </video>
+                    <video autoplay loop muted playsinline>
+                        <source src="../assets/videos/Asimbly_Climb_02_01.webm" type="video/webm">
                     </video>
                 </div>
                 
                 <p class="text-secondary">
-                    <em>Above: Debug view showing the capsule trace logic used to detect walkable ledges for the mantling system.</em>
+                    <em>Above: Overview of movement mechanics and debug view showing capsule trace logic for mantling.</em>
                 </p>
             </section>
 
@@ -88,12 +91,18 @@
                 </p>
                 <p>
                     I implemented a custom C++ <strong>GameInstance Subsystem</strong>. The UI widgets act strictly as "Views," 
-                    querying the Subsystem ("Model") for data. This MVVM-style approach cleaned up the Blueprint graphs significantly and prevents blueprint compilation errors since the structs are defined within C++.
+                    querying the Subsystem ("Model") for data. This MVVM-style approach cleaned up the Blueprint graphs significantly.
                 </p>
 
-                <!-- IMAGE: Blueprint Graph (Static images are often better for reading nodes) -->
-                <div class="placeholder-media">
-                    <img src="..//assets/images/Asimbly_UI_Settings.png" alt="UI Graph">
+                <!-- CAROUSEL: Single Image (Still works as carousel) -->
+                <div class="media-carousel">
+                    <img src="../assets/images/Asimbly_UI_Settings.png" alt="UI Graph">
+                    <img src="../assets/images/UI_01.png" alt="UI Settings">
+                    <img src="../assets/images/UI_02.png" alt="UI Settings 2">
+                    <img src="../assets/images/UI_03.png" alt="UI Settings 3">
+                    <img src="../assets/images/UI_04.png" alt="UI Settings 4">
+                    <img src="../assets/images/UI_05.png" alt="UI Settings 5">
+                    <img src="../assets/images/UI_06.png" alt="UI Settings 6">
                 </div>
             </section>
 
@@ -108,9 +117,10 @@
                     shaders for damage feedback effects, ensuring they were lightweight on the GPU.
                 </p>
 
-                <!-- IMAGE: Materials -->
-                <div class="placeholder-media">
-                    <img src="..//assets/images/Asimbly_HLSL_01.png" alt="Materials">
+                <!-- CAROUSEL: Images -->
+                <div class="media-carousel">
+                    <img src="../assets/images/Asimbly_HLSL_01.png" alt="Materials">
+                    <img src="../assets/images/Asimbly_HLSL_02.png" alt="Materials 2">
                 </div>
             </section>
 
@@ -125,11 +135,13 @@
                     I used the Environment Query System (EQS) to allow the AI to find optimal range positions relative to the player.
                 </p>
 
-                <!-- VIDEO: AI Behavior -->
-                <div class="placeholder-media">
+                <!-- CAROUSEL: Video -->
+                <div class="media-carousel">
                     <video autoplay loop muted playsinline>
                         <source src="../assets/videos/Asimbly_BehaviorTree_01.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
+                    </video>
+                    <video autoplay loop muted playsinline>
+                        <source src="../assets/videos/Asimbly_EQS_01.mp4" type="video/mp4">
                     </video>
                 </div>
             </section>
@@ -146,11 +158,10 @@
                     preventing hard reference chains and reducing load times.
                 </p>
 
-                <!-- VIDEO: Interaction -->
-                <div class="placeholder-media">
+                <!-- CAROUSEL: Video -->
+                <div class="media-carousel">
                     <video autoplay loop muted playsinline>
                         <source src="../assets/videos/Asimbly_Interaction_System_01.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
                     </video>
                 </div>
             </section>
@@ -163,5 +174,7 @@
         <p>&copy; 2025 Lawrence Quick.</p>
     </footer>
 
+    <!-- CAROUSEL SCRIPT -->
+    <script src="../assets/js/carousel.js"></script>
 </body>
 </html>
