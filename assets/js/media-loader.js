@@ -2,7 +2,7 @@ class MediaLoader {
     constructor() {
         this.queue = [];
         this.observer = null;
-        this.maxConcurrent = 1; // CHANGED: Serial loading (1 at a time) to prevent stutter
+        this.maxConcurrent = 1; // Strictly one download at a time
         this.activeDownloads = 0;
 
         this.initObserver();
@@ -34,11 +34,13 @@ class MediaLoader {
         if (videoElement.dataset.mediaLoaded === "true") return;
         if (this.queue.some(item => item.element === videoElement)) return;
 
-        // 1. VISUAL FIX: Apply poster to the wrapper background
-        // This ensures the image stays visible even if the video element flickers
+        // 1. VISUAL SETUP: Apply poster to wrapper background
         const wrapper = videoElement.closest('.video-wrapper') || videoElement.parentElement;
         if (wrapper) {
+            // Apply loading state immediately
             wrapper.classList.add('is-loading');
+            
+            // Set background image from poster attribute
             const posterUrl = videoElement.getAttribute('poster');
             if (posterUrl) {
                 wrapper.style.backgroundImage = `url('${posterUrl}')`;
@@ -75,63 +77,68 @@ class MediaLoader {
 
         const candidate = this.queue[0];
         
-        // If candidate is off-screen (score 0) and we have other downloads, wait.
-        // But if nothing is happening, start downloading the off-screen one (background prep).
+        // Wait if the best candidate is off-screen (score 0), 
+        // unless we are idle, in which case we preload it.
         if (candidate.score === 0 && this.activeDownloads > 0) return;
 
-        this.loadVideo(candidate);
+        this.loadVideoBlob(candidate);
     }
 
-    loadVideo(item) {
+    loadVideoBlob(item) {
         const video = item.element;
-        
+        const src = video.dataset.src;
+
+        // Remove from queue
         this.queue = this.queue.filter(q => q !== item);
         this.observer.unobserve(video);
         
         this.activeDownloads++;
 
-        const src = video.dataset.src;
-        if (src) {
-            video.src = src;
-            video.load(); 
+        if (!src) {
+            this.activeDownloads--;
+            return;
         }
 
-        // PERFORMANCE FIX: use 'canplaythrough' to ensure buffer is healthy
-        const onReady = () => {
-            const wrapper = video.closest('.video-wrapper') || video.parentElement;
-            
-            // Try to play
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    // Only fade in once we are successfully playing
-                    if (wrapper) {
-                        wrapper.classList.remove('is-loading');
-                        wrapper.classList.add('is-playing');
-                    }
-                }).catch((e) => {
-                    console.warn("Autoplay prevented:", e);
-                    // Even if autoplay fails, show the video so controls appear (if enabled)
-                    if (wrapper) wrapper.classList.add('is-playing');
-                });
-            }
-
-            this.activeDownloads--;
-            this.processQueue(); 
-        };
-
-        // Fallback: If canplaythrough takes too long (5s), force show to prevent permanent spinner
-        const safetyTimeout = setTimeout(() => {
-            console.log("Load timeout for", src);
-            onReady();
-        }, 8000);
-
-        video.addEventListener('canplaythrough', () => {
-            clearTimeout(safetyTimeout);
-            onReady();
-        }, { once: true });
-
-        video.dataset.mediaLoaded = "true";
+        // --- THE BLOB STRATEGY ---
+        // 1. Fetch the entire file as a blob
+        fetch(src)
+            .then(response => {
+                if (!response.ok) throw new Error(`Failed to fetch ${src}`);
+                return response.blob();
+            })
+            .then(blob => {
+                // 2. Create a local Object URL
+                const objectUrl = URL.createObjectURL(blob);
+                
+                // 3. Assign to video source
+                video.src = objectUrl;
+                
+                // 4. Play (It is now "local", so it should trigger instantly)
+                return video.play();
+            })
+            .then(() => {
+                // Success: Fade in video
+                const wrapper = video.closest('.video-wrapper') || video.parentElement;
+                if (wrapper) {
+                    wrapper.classList.remove('is-loading');
+                    wrapper.classList.add('is-playing');
+                    // Clean up the background image after transition to save memory/paint
+                    setTimeout(() => {
+                        wrapper.style.backgroundImage = 'none';
+                    }, 1000); 
+                }
+            })
+            .catch(err => {
+                console.error("Video load failed:", err);
+                // Fallback: If blob fails, try standard streaming
+                video.src = src; 
+            })
+            .finally(() => {
+                // 5. Cleanup and move to next video
+                this.activeDownloads--;
+                video.dataset.mediaLoaded = "true";
+                this.processQueue();
+            });
     }
 }
 
