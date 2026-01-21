@@ -34,31 +34,41 @@ class MediaLoader {
         if (videoElement.dataset.mediaLoaded === "true") return;
         if (this.queue.some(item => item.element === videoElement)) return;
 
-        // 1. VISUAL SETUP: Inject Real Image Tag
+        // 1. VISUAL SETUP: Inject Cup Loader & Poster
         const wrapper = videoElement.closest('.video-wrapper') || videoElement.parentElement;
         if (wrapper) {
             wrapper.classList.add('is-loading');
             
-            // Check if we already injected a poster
+            // A. Inject Poster Image
             if (!wrapper.querySelector('.poster-image')) {
-                
-                // CHANGED: Use .poster property (Absolute URL) instead of getAttribute (Relative String)
-                // This fixes path resolution issues in subdirectories.
                 const posterUrl = videoElement.poster; 
-                
                 if (posterUrl) {
                     const img = document.createElement('img');
                     img.src = posterUrl;
                     img.className = 'poster-image';
-                    img.alt = "Loading Media..."; // Default alt text
-                    
-                    // DEBUG: Log if image fails
-                    img.onerror = () => {
-                        console.warn("Poster failed to load at:", img.src);
-                    };
-
+                    img.alt = "Loading Media...";
+                    img.onerror = () => { console.warn("Poster failed:", img.src); };
                     wrapper.insertBefore(img, videoElement); 
                 }
+            }
+
+            // B. Inject Coffee Cup Loader (if not exists)
+            if (!wrapper.querySelector('.loader-cup-container')) {
+                const loader = document.createElement('div');
+                loader.className = 'loader-cup-container';
+                loader.innerHTML = `
+                    <div class="steam-container">
+                        <span class="steam-puff"></span>
+                        <span class="steam-puff"></span>
+                        <span class="steam-puff"></span>
+                    </div>
+                    <div class="cup-body">
+                        <div class="liquid"></div>
+                    </div>
+                    <div class="cup-handle"></div>
+                `;
+                // Append it into the wrapper
+                wrapper.appendChild(loader);
             }
         }
 
@@ -90,16 +100,18 @@ class MediaLoader {
         if (this.queue.length === 0) return;
 
         const candidate = this.queue[0];
-        
         if (candidate.score === 0 && this.activeDownloads > 0) return;
 
         this.loadVideoBlob(candidate);
     }
 
-    loadVideoBlob(item) {
+    async loadVideoBlob(item) {
         const video = item.element;
         const src = video.dataset.src;
+        const wrapper = video.closest('.video-wrapper');
+        const loaderContainer = wrapper ? wrapper.querySelector('.loader-cup-container') : null;
 
+        // Remove from queue
         this.queue = this.queue.filter(q => q !== item);
         this.observer.unobserve(video);
         
@@ -110,33 +122,62 @@ class MediaLoader {
             return;
         }
 
-        // --- THE BLOB STRATEGY ---
-        fetch(src)
-            .then(response => {
-                if (!response.ok) throw new Error(`Failed to fetch ${src}`);
-                return response.blob();
-            })
-            .then(blob => {
-                const objectUrl = URL.createObjectURL(blob);
-                video.src = objectUrl;
-                return video.play();
-            })
-            .then(() => {
-                const wrapper = video.closest('.video-wrapper') || video.parentElement;
-                if (wrapper) {
-                    wrapper.classList.remove('is-loading');
-                    wrapper.classList.add('is-playing');
+        try {
+            // --- STREAMING FETCH ---
+            const response = await fetch(src);
+            if (!response.ok) throw new Error(`Failed to fetch ${src}`);
+
+            // 1. Get total size for progress calc
+            const contentLength = response.headers.get('content-length');
+            const total = parseInt(contentLength, 10);
+            let loaded = 0;
+
+            // 2. Setup Reader
+            const reader = response.body.getReader();
+            const chunks = [];
+
+            while(true) {
+                const {done, value} = await reader.read();
+                if (done) break;
+                
+                chunks.push(value);
+                loaded += value.length;
+
+                // 3. Update Progress UI
+                if (total && loaderContainer) {
+                    const percent = (loaded / total) * 100;
+                    loaderContainer.style.setProperty('--progress', `${percent}%`);
                 }
-            })
-            .catch(err => {
-                console.error("Video load failed:", err);
-                video.src = src; 
-            })
-            .finally(() => {
-                this.activeDownloads--;
-                video.dataset.mediaLoaded = "true";
-                this.processQueue();
-            });
+            }
+
+            // 4. Assemble Blob
+            const blob = new Blob(chunks);
+            const objectUrl = URL.createObjectURL(blob);
+            
+            video.src = objectUrl;
+            
+            await video.play();
+
+            // Success
+            if (wrapper) {
+                wrapper.classList.remove('is-loading');
+                wrapper.classList.add('is-playing');
+                
+                // Cleanup loader after animation
+                setTimeout(() => {
+                    if (loaderContainer) loaderContainer.remove();
+                }, 1000);
+            }
+
+        } catch (err) {
+            console.error("Video load failed:", err);
+            // Fallback to basic streaming
+            video.src = src; 
+        } finally {
+            this.activeDownloads--;
+            video.dataset.mediaLoaded = "true";
+            this.processQueue();
+        }
     }
 }
 
