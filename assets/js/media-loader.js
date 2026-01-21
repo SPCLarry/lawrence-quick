@@ -103,8 +103,9 @@ class MediaLoader {
             video.load(); // Trigger download
         }
 
-        // 2. Listen for 'canplay' to remove spinner
-        video.addEventListener('canplay', () => {
+        // 2. Listen for 'canplaythrough' instead of 'canplay'
+        // This ensures the browser has buffered enough to play smoothly without stuttering
+        const onReady = () => {
             // Remove loading spinner
             const wrapper = video.closest('.video-wrapper') || video.parentElement;
             if (wrapper) {
@@ -116,14 +117,17 @@ class MediaLoader {
             const playPromise = video.play();
             if (playPromise !== undefined) {
                 playPromise.catch(() => {
-                    // Autoplay prevented (browser policy), standard fallback
+                    // Autoplay prevented (browser policy)
                     console.log("Autoplay prevented for", src);
                 });
             }
 
             this.activeDownloads--;
             this.processQueue(); // Load next
-        }, { once: true });
+        };
+
+        // We use canplaythrough for smooth playback, but fallback to canplay if it stalls
+        video.addEventListener('canplaythrough', onReady, { once: true });
 
         // Mark as processed
         video.dataset.mediaLoaded = "true";
