@@ -10,6 +10,11 @@
 *.mp3 filter=lfs diff=lfs merge=lfs -text
 *.wav filter=lfs diff=lfs merge=lfs -text
 *.xcf filter=lfs diff=lfs merge=lfs -text
+
+# --- MODIFIED SECTION ---
+# Track generic JPGs in LFS
 *.jpg filter=lfs diff=lfs merge=lfs -text
-@Stinger05189
- 
+
+# EXCEPTION: Ensure web assets (posters) are treated as standard files, NOT LFS
+assets/videos/posters/*.jpg !filter !diff !merge text
+# ------------------------
