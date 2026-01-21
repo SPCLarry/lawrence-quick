@@ -1,116 +1,68 @@
-/* --- START OF FILE assets/css/loader.css --- */
-
-/* The Container centered in the video wrapper */
-.loader-cup-container {
+/* The Terminal Window Container */
+.loader-terminal-container {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 60px; height: 70px; /* Overall size */
-    z-index: 20; /* Above poster, below video (until video loads) */
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
     
-    /* Default to 0% if JS doesn't set it */
-    --progress: 0%;
+    /* Terminal Look */
+    background: rgba(10, 10, 10, 0.9);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace; /* Use your mono font */
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 280px;
+    
+    z-index: 20;
+    pointer-events: none;
+    
+    /* Box Shadow for depth against poster */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    backdrop-filter: blur(4px);
 }
 
-/* Show when loading */
-.video-wrapper.is-loading .loader-cup-container {
-    opacity: 1;
-}
-
-/* --- THE CUP BODY --- */
-.cup-body {
-    position: relative;
-    width: 50px; height: 40px;
-    border: 3px solid rgba(255, 255, 255, 0.8);
-    border-top: none;
-    border-radius: 0 0 20px 20px;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent backing */
-    overflow: hidden; /* Clips the liquid */
-    z-index: 2;
-    margin-top: 20px; /* Space for steam */
-}
-
-/* --- THE HANDLE --- */
-.cup-handle {
-    position: absolute;
-    top: 25px; right: 2px;
-    width: 12px; height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.8);
-    border-left: none;
-    border-radius: 0 10px 10px 0;
-    z-index: 1;
-}
-
-/* --- THE LIQUID --- */
-.liquid {
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 100%;
-    height: var(--progress); /* Driven by JS */
-    background: var(--text-accent); /* Unreal Blue */
-    transition: height 0.1s linear; /* Smooth growth */
-    min-height: 0px;
-}
-
-/* --- THE WAVE --- */
-/* A rotating rounded square that creates the ripple effect */
-.liquid::before {
-    content: '';
-    position: absolute;
-    top: -10px; left: 50%;
-    width: 80px; height: 80px;
-    background: rgba(255, 255, 255, 0.2); /* Highlight color */
-    border-radius: 40%;
-    transform: translate(-50%, 0) rotate(0deg);
-    animation: wave-spin 3s linear infinite;
-}
-
-/* Second wave phase for depth */
-.liquid::after {
-    content: '';
-    position: absolute;
-    top: -15px; left: 50%;
-    width: 85px; height: 85px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 42%;
-    transform: translate(-50%, 0) rotate(0deg);
-    animation: wave-spin 5s linear infinite;
-}
-
-@keyframes wave-spin {
-    0% { transform: translate(-50%, 0) rotate(0deg); }
-    100% { transform: translate(-50%, 0) rotate(360deg); }
-}
-
-/* --- THE STEAM --- */
-.steam-container {
-    position: absolute;
-    top: 0; left: 10px;
-    width: 30px; height: 20px;
+/* Row 1: Status Line (Spinner + Task) */
+.term-row-status {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    color: var(--text-primary);
+    margin-bottom: 0.2rem;
 }
 
-.steam-puff {
-    width: 4px; height: 10px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 2px;
-    animation: steam-rise 1.5s infinite ease-out;
-    filter: blur(2px);
-    opacity: 0;
+.term-spinner {
+    color: var(--text-accent); /* Unreal Blue */
+    font-weight: bold;
+    margin-right: 0.5rem;
+    display: inline-block;
+    width: 1ch; 
 }
 
-/* Stagger the steam animations */
-.steam-puff:nth-child(1) { animation-delay: 0s; height: 12px; }
-.steam-puff:nth-child(2) { animation-delay: 0.5s; height: 16px; }
-.steam-puff:nth-child(3) { animation-delay: 1.0s; height: 10px; }
-
-@keyframes steam-rise {
-    0% { transform: translateY(0); opacity: 0; }
-    50% { opacity: 0.8; }
-    100% { transform: translateY(-15px); opacity: 0; }
+/* Row 2: The Progress Bar */
+.term-progress-bar {
+    color: var(--text-accent);
+    white-space: pre; /* Ensure spaces are preserved */
+    letter-spacing: -1px; /* Tighten the blocks */
 }
+
+/* Row 3: The Rapid Hex Dump */
+.term-hex-dump {
+    font-size: 0.75rem;
+    color: #555;
+    text-transform: uppercase;
+    font-family: monospace;
+    opacity: 0.8;
+}
+
+/* Blinking Cursor at end of Hex Dump */
+.term-hex-dump::after {
+    content: '_';
+    animation: blink 1s step-end infinite;
+    color: var(--text-accent);
+}
+
+@keyframes blink { 50% { opacity: 0; } }

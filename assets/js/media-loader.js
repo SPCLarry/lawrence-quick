@@ -4,6 +4,10 @@ class MediaLoader {
         this.observer = null;
         this.maxConcurrent = 1; 
         this.activeDownloads = 0;
+        
+        // CLI Animation Helpers
+        this.spinnerFrames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+        this.spinnerIdx = 0;
 
         this.initObserver();
     }
@@ -34,41 +38,36 @@ class MediaLoader {
         if (videoElement.dataset.mediaLoaded === "true") return;
         if (this.queue.some(item => item.element === videoElement)) return;
 
-        // 1. VISUAL SETUP: Inject Cup Loader & Poster
         const wrapper = videoElement.closest('.video-wrapper') || videoElement.parentElement;
         if (wrapper) {
             wrapper.classList.add('is-loading');
             
-            // A. Inject Poster Image
+            // 1. Inject Poster
             if (!wrapper.querySelector('.poster-image')) {
                 const posterUrl = videoElement.poster; 
                 if (posterUrl) {
                     const img = document.createElement('img');
                     img.src = posterUrl;
                     img.className = 'poster-image';
-                    img.alt = "Loading Media...";
+                    img.alt = ""; // Decorative
                     img.onerror = () => { console.warn("Poster failed:", img.src); };
                     wrapper.insertBefore(img, videoElement); 
                 }
             }
 
-            // B. Inject Coffee Cup Loader (if not exists)
-            if (!wrapper.querySelector('.loader-cup-container')) {
-                const loader = document.createElement('div');
-                loader.className = 'loader-cup-container';
-                loader.innerHTML = `
-                    <div class="steam-container">
-                        <span class="steam-puff"></span>
-                        <span class="steam-puff"></span>
-                        <span class="steam-puff"></span>
+            // 2. Inject Terminal Loader (CLI Style)
+            if (!wrapper.querySelector('.loader-terminal-container')) {
+                const term = document.createElement('div');
+                term.className = 'loader-terminal-container';
+                term.innerHTML = `
+                    <div class="term-row-status">
+                        <span><span class="term-spinner">⠋</span> FETCH_BLOB</span>
+                        <span class="term-percent">0%</span>
                     </div>
-                    <div class="cup-body">
-                        <div class="liquid"></div>
-                    </div>
-                    <div class="cup-handle"></div>
+                    <div class="term-progress-bar">[....................]</div>
+                    <div class="term-hex-dump">0x00000000</div>
                 `;
-                // Append it into the wrapper
-                wrapper.appendChild(loader);
+                wrapper.appendChild(term);
             }
         }
 
@@ -105,16 +104,34 @@ class MediaLoader {
         this.loadVideoBlob(candidate);
     }
 
+    // --- UTILS FOR CLI ANIMATION ---
+    getProgressBar(percent) {
+        const totalChars = 20;
+        const filledChars = Math.floor((percent / 100) * totalChars);
+        const emptyChars = totalChars - filledChars;
+        return '[' + '▓'.repeat(filledChars) + '░'.repeat(emptyChars) + ']';
+    }
+
+    getRandomHex() {
+        // Generates fake memory addresses like 0x4A1F...
+        return '0x' + Math.floor(Math.random()*16777215).toString(16).toUpperCase().padStart(8, '0') + 
+               ' :: ' + Math.floor(Math.random()*16777215).toString(16).toUpperCase().padStart(8, '0');
+    }
+
     async loadVideoBlob(item) {
         const video = item.element;
         const src = video.dataset.src;
         const wrapper = video.closest('.video-wrapper');
-        const loaderContainer = wrapper ? wrapper.querySelector('.loader-cup-container') : null;
+        
+        // UI References
+        const termContainer = wrapper ? wrapper.querySelector('.loader-terminal-container') : null;
+        const uiSpinner = termContainer ? termContainer.querySelector('.term-spinner') : null;
+        const uiPercent = termContainer ? termContainer.querySelector('.term-percent') : null;
+        const uiBar = termContainer ? termContainer.querySelector('.term-progress-bar') : null;
+        const uiHex = termContainer ? termContainer.querySelector('.term-hex-dump') : null;
 
-        // Remove from queue
         this.queue = this.queue.filter(q => q !== item);
         this.observer.unobserve(video);
-        
         this.activeDownloads++;
 
         if (!src) {
@@ -123,18 +140,18 @@ class MediaLoader {
         }
 
         try {
-            // --- STREAMING FETCH ---
             const response = await fetch(src);
             if (!response.ok) throw new Error(`Failed to fetch ${src}`);
 
-            // 1. Get total size for progress calc
             const contentLength = response.headers.get('content-length');
             const total = parseInt(contentLength, 10);
             let loaded = 0;
 
-            // 2. Setup Reader
             const reader = response.body.getReader();
             const chunks = [];
+
+            // Frame counter to slow down spinner speed slightly
+            let frameTick = 0; 
 
             while(true) {
                 const {done, value} = await reader.read();
@@ -143,35 +160,43 @@ class MediaLoader {
                 chunks.push(value);
                 loaded += value.length;
 
-                // 3. Update Progress UI
-                if (total && loaderContainer) {
-                    const percent = (loaded / total) * 100;
-                    loaderContainer.style.setProperty('--progress', `${percent}%`);
+                // UPDATE UI
+                if (total && termContainer) {
+                    const percent = Math.floor((loaded / total) * 100);
+                    
+                    // Update Text
+                    if (uiPercent) uiPercent.innerText = `${percent}%`;
+                    if (uiBar) uiBar.innerText = this.getProgressBar(percent);
+                    
+                    // Update Hex (Rapid change)
+                    if (uiHex) uiHex.innerText = this.getRandomHex();
+
+                    // Update Spinner (Cycle every 5 ticks to not be too crazy)
+                    frameTick++;
+                    if (uiSpinner && frameTick % 5 === 0) {
+                        this.spinnerIdx = (this.spinnerIdx + 1) % this.spinnerFrames.length;
+                        uiSpinner.innerText = this.spinnerFrames[this.spinnerIdx];
+                    }
                 }
             }
 
-            // 4. Assemble Blob
             const blob = new Blob(chunks);
             const objectUrl = URL.createObjectURL(blob);
-            
             video.src = objectUrl;
             
             await video.play();
 
-            // Success
             if (wrapper) {
                 wrapper.classList.remove('is-loading');
                 wrapper.classList.add('is-playing');
-                
-                // Cleanup loader after animation
+                // Cleanup UI
                 setTimeout(() => {
-                    if (loaderContainer) loaderContainer.remove();
-                }, 1000);
+                    if (termContainer) termContainer.remove();
+                }, 500);
             }
 
         } catch (err) {
             console.error("Video load failed:", err);
-            // Fallback to basic streaming
             video.src = src; 
         } finally {
             this.activeDownloads--;
