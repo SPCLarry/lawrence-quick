@@ -2,7 +2,7 @@ class MediaLoader {
     constructor() {
         this.queue = [];
         this.observer = null;
-        this.maxConcurrent = 1; // Strictly one download at a time
+        this.maxConcurrent = 1; 
         this.activeDownloads = 0;
 
         this.initObserver();
@@ -39,16 +39,24 @@ class MediaLoader {
         if (wrapper) {
             wrapper.classList.add('is-loading');
             
-            // Check if we already injected a poster to avoid duplicates
+            // Check if we already injected a poster
             if (!wrapper.querySelector('.poster-image')) {
-                const posterUrl = videoElement.getAttribute('poster');
+                
+                // CHANGED: Use .poster property (Absolute URL) instead of getAttribute (Relative String)
+                // This fixes path resolution issues in subdirectories.
+                const posterUrl = videoElement.poster; 
+                
                 if (posterUrl) {
                     const img = document.createElement('img');
                     img.src = posterUrl;
                     img.className = 'poster-image';
-                    img.alt = "Video Preview";
-                    // Insert before the video so it sits behind it in DOM order 
-                    // (though Z-Index in CSS will handle the real layering)
+                    img.alt = "Loading Media..."; // Default alt text
+                    
+                    // DEBUG: Log if image fails
+                    img.onerror = () => {
+                        console.warn("Poster failed to load at:", img.src);
+                    };
+
                     wrapper.insertBefore(img, videoElement); 
                 }
             }
@@ -83,7 +91,6 @@ class MediaLoader {
 
         const candidate = this.queue[0];
         
-        // Wait if best candidate is off-screen, unless we are idle
         if (candidate.score === 0 && this.activeDownloads > 0) return;
 
         this.loadVideoBlob(candidate);
@@ -115,7 +122,6 @@ class MediaLoader {
                 return video.play();
             })
             .then(() => {
-                // Success
                 const wrapper = video.closest('.video-wrapper') || video.parentElement;
                 if (wrapper) {
                     wrapper.classList.remove('is-loading');
@@ -124,7 +130,7 @@ class MediaLoader {
             })
             .catch(err => {
                 console.error("Video load failed:", err);
-                video.src = src; // Fallback to stream
+                video.src = src; 
             })
             .finally(() => {
                 this.activeDownloads--;
