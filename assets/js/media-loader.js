@@ -2,7 +2,7 @@ class MediaLoader {
     constructor() {
         this.queue = [];
         this.observer = null;
-        this.maxConcurrent = 2; // Only load 2 videos at once
+        this.maxConcurrent = 1; // CHANGED: Serial loading (1 at a time) to prevent stutter
         this.activeDownloads = 0;
 
         this.initObserver();
@@ -16,38 +16,35 @@ class MediaLoader {
     }
 
     initObserver() {
-        // Observer tracks if a video is in the viewport
         this.observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const videoData = this.queue.find(item => item.element === entry.target);
                 if (videoData) {
                     videoData.inView = entry.isIntersecting;
-                    
-                    // Force update priorities when view changes
                     this.updatePriorities();
                 }
             });
         }, {
-            rootMargin: '200px 0px', // Detect items 200px before they appear
+            rootMargin: '200px 0px',
             threshold: 0.1
         });
     }
 
-    /**
-     * Register a video element to be managed
-     * @param {HTMLVideoElement} videoElement 
-     * @param {Boolean} isHighPriority (Optional force priority)
-     */
     register(videoElement, isHighPriority = false) {
-        // Prevent double registration
         if (videoElement.dataset.mediaLoaded === "true") return;
         if (this.queue.some(item => item.element === videoElement)) return;
 
-        // Add visual loading state class
+        // 1. VISUAL FIX: Apply poster to the wrapper background
+        // This ensures the image stays visible even if the video element flickers
         const wrapper = videoElement.closest('.video-wrapper') || videoElement.parentElement;
-        if (wrapper) wrapper.classList.add('is-loading');
+        if (wrapper) {
+            wrapper.classList.add('is-loading');
+            const posterUrl = videoElement.getAttribute('poster');
+            if (posterUrl) {
+                wrapper.style.backgroundImage = `url('${posterUrl}')`;
+            }
+        }
 
-        // Add to tracking
         this.queue.push({
             element: videoElement,
             inView: false,
@@ -69,7 +66,6 @@ class MediaLoader {
 
         // Sort: Highest score first
         this.queue.sort((a, b) => b.score - a.score);
-        
         this.processQueue();
     }
 
@@ -77,11 +73,10 @@ class MediaLoader {
         if (this.activeDownloads >= this.maxConcurrent) return;
         if (this.queue.length === 0) return;
 
-        // Find next candidate (that isn't already loading)
         const candidate = this.queue[0];
-
-        // If even the best candidate has 0 score (off screen), wait.
-        // Unless queue is small, then just clear it out slowly.
+        
+        // If candidate is off-screen (score 0) and we have other downloads, wait.
+        // But if nothing is happening, start downloading the off-screen one (background prep).
         if (candidate.score === 0 && this.activeDownloads > 0) return;
 
         this.loadVideo(candidate);
@@ -90,54 +85,58 @@ class MediaLoader {
     loadVideo(item) {
         const video = item.element;
         
-        // Remove from queue
         this.queue = this.queue.filter(q => q !== item);
         this.observer.unobserve(video);
         
         this.activeDownloads++;
 
-        // 1. Move data-src to src
         const src = video.dataset.src;
         if (src) {
             video.src = src;
-            video.load(); // Trigger download
+            video.load(); 
         }
 
-        // 2. Listen for 'canplaythrough' instead of 'canplay'
-        // This ensures the browser has buffered enough to play smoothly without stuttering
+        // PERFORMANCE FIX: use 'canplaythrough' to ensure buffer is healthy
         const onReady = () => {
-            // Remove loading spinner
             const wrapper = video.closest('.video-wrapper') || video.parentElement;
-            if (wrapper) {
-                wrapper.classList.remove('is-loading');
-                wrapper.classList.add('is-playing');
-            }
             
             // Try to play
             const playPromise = video.play();
             if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    // Autoplay prevented (browser policy)
-                    console.log("Autoplay prevented for", src);
+                playPromise.then(() => {
+                    // Only fade in once we are successfully playing
+                    if (wrapper) {
+                        wrapper.classList.remove('is-loading');
+                        wrapper.classList.add('is-playing');
+                    }
+                }).catch((e) => {
+                    console.warn("Autoplay prevented:", e);
+                    // Even if autoplay fails, show the video so controls appear (if enabled)
+                    if (wrapper) wrapper.classList.add('is-playing');
                 });
             }
 
             this.activeDownloads--;
-            this.processQueue(); // Load next
+            this.processQueue(); 
         };
 
-        // We use canplaythrough for smooth playback, but fallback to canplay if it stalls
-        video.addEventListener('canplaythrough', onReady, { once: true });
+        // Fallback: If canplaythrough takes too long (5s), force show to prevent permanent spinner
+        const safetyTimeout = setTimeout(() => {
+            console.log("Load timeout for", src);
+            onReady();
+        }, 8000);
 
-        // Mark as processed
+        video.addEventListener('canplaythrough', () => {
+            clearTimeout(safetyTimeout);
+            onReady();
+        }, { once: true });
+
         video.dataset.mediaLoaded = "true";
     }
 }
 
-// Global accessor
 const mediaLoader = MediaLoader.getInstance();
 
-// Auto-register any lazy videos found on DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
     const lazyVideos = document.querySelectorAll('video.lazy-video');
     lazyVideos.forEach(v => mediaLoader.register(v));
