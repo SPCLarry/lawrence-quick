@@ -70,12 +70,19 @@
                 <!-- CAROUSEL: Mixed Media Example -->
                 <div class="media-carousel">
                     <!-- Slide 1: Video -->
-                    <video autoplay loop muted playsinline>
-                        <source src="../assets/videos/Asimbly_Climb_01.mp4" type="video/mp4">
-                    </video>
-                    <video autoplay loop muted playsinline>
-                        <source src="../assets/videos/Asimbly_Climb_02_01.webm" type="video/webm">
-                    </video>
+                    <div class="video-wrapper">
+                        <video class="lazy-video" loop muted playsinline
+                            poster="../assets/videos/posters/Asimbly_Climb_01_poster.jpg"
+                            data-src="../assets/videos/Asimbly_Climb_01.mp4">
+                        </video>
+                    </div>
+                    <!-- Slide 2: Video -->
+                    <div class="video-wrapper">
+                        <video class="lazy-video" loop muted playsinline
+                            poster="../assets/videos/posters/Asimbly_Climb_02_01_poster.jpg"
+                            data-src="../assets/videos/Asimbly_Climb_02_01.webm">
+                        </video>
+                    </div>
                 </div>
                 
                 <p class="text-secondary">
@@ -95,9 +102,12 @@
                 </p>
 
                 <div class="media-carousel">
-                    <video autoplay loop muted playsinline>
-                        <source src="../assets/videos/Asimbly_UI_LaunchGame.mp4" type="video/mp4">
-                    </video>
+                    <div class="video-wrapper">
+                        <video class="lazy-video" loop muted playsinline
+                            poster="../assets/videos/posters/Asimbly_UI_LaunchGame_poster.jpg"
+                            data-src="../assets/videos/Asimbly_UI_LaunchGame.mp4">
+                        </video>
+                    </div>
                     <img src="../assets/images/Asimbly_UI_Settings.jpeg" alt="UI Graph">
                     <img src="../assets/images/UI_01.jpeg" alt="UI Settings">
                     <img src="../assets/images/UI_02.jpeg" alt="UI Settings 2">
@@ -120,12 +130,18 @@
                 </p>
 
                 <div class="media-carousel">
-                    <video autoplay loop muted playsinline>
-                        <source src="../assets/videos/Asimbly_HLSL_01.webm" type="video/webm">
-                    </video>
-                    <video autoplay loop muted playsinline>
-                        <source src="../assets/videos/Asimbly_HLSL_02.mp4" type="video/mp4">
-                    </video>
+                    <div class="video-wrapper">
+                        <video class="lazy-video" loop muted playsinline
+                            poster="../assets/videos/posters/Asimbly_HLSL_01_poster.jpg"
+                            data-src="../assets/videos/Asimbly_HLSL_01.webm">
+                        </video>
+                    </div>
+                    <div class="video-wrapper">
+                        <video class="lazy-video" loop muted playsinline
+                            poster="../assets/videos/posters/Asimbly_HLSL_02_poster.jpg"
+                            data-src="../assets/videos/Asimbly_HLSL_02.mp4">
+                        </video>
+                    </div>
                 </div>
             </section>
 
@@ -140,14 +156,19 @@
                     I used the Environment Query System (EQS) to allow the AI to find optimal range positions relative to the player.
                 </p>
 
-                <!-- CAROUSEL: Video -->
                 <div class="media-carousel">
-                    <video autoplay loop muted playsinline>
-                        <source src="../assets/videos/Asimbly_BehaviorTree_01.mp4" type="video/mp4">
-                    </video>
-                    <video autoplay loop muted playsinline>
-                        <source src="../assets/videos/Asimbly_EQS_01.webm" type="video/webm">
-                    </video>
+                    <div class="video-wrapper">
+                        <video class="lazy-video" loop muted playsinline
+                            poster="../assets/videos/posters/Asimbly_BehaviorTree_01_poster.jpg"
+                            data-src="../assets/videos/Asimbly_BehaviorTree_01.mp4">
+                        </video>
+                    </div>
+                    <div class="video-wrapper">
+                        <video class="lazy-video" loop muted playsinline
+                            poster="../assets/videos/posters/Asimbly_EQS_01_poster.jpg"
+                            data-src="../assets/videos/Asimbly_EQS_01.webm">
+                        </video>
+                    </div>
                 </div>
             </section>
 
@@ -163,11 +184,13 @@
                     preventing hard reference chains and reducing load times.
                 </p>
 
-                <!-- CAROUSEL: Video -->
                 <div class="media-carousel">
-                    <video autoplay loop muted playsinline>
-                        <source src="../assets/videos/Asimbly_Interaction_System_01.mp4" type="video/mp4">
-                    </video>
+                    <div class="video-wrapper">
+                        <video class="lazy-video" loop muted playsinline
+                            poster="../assets/videos/posters/Asimbly_Interaction_System_01_poster.jpg"
+                            data-src="../assets/videos/Asimbly_Interaction_System_01.mp4">
+                        </video>
+                    </div>
                 </div>
             </section>
 
@@ -188,7 +211,8 @@
         </div>
     </div>
 
-    <!-- CAROUSEL SCRIPT -->
+    <!-- SCRIPTS -->
+    <script src="../assets/js/media-loader.js"></script>
     <script src="../assets/js/carousel.js"></script>
 </body>
 </html>

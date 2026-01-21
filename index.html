@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <!-- NAVBAR (No Resume Button) -->
+    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="logo">Lawrence Quick</a>
@@ -24,10 +24,8 @@
     <!-- HERO SECTION -->
     <header class="hero">
         <div class="hero-content">
-            <!-- 1. The Specific "Dream Title" -->
             <h1>Unreal Engine <span class="text-gradient">Gameplay Systems</span> Developer</h1>
             
-            <!-- 2. Skills Up Front -->
             <div class="quick-stack">
                 <span class="stack-badge">Unreal Engine 5</span>
                 <span class="stack-badge">C++</span>
@@ -41,10 +39,8 @@
                 Focusing on clean debugging, state management, and long-term project maintainability.
             </p>
             
-            <!-- Primary CTA -->
             <a href="#work" class="btn-primary">View Featured Project</a>
             
-            <!-- Resume Link -->
             <div style="margin-top: 1rem;">
                 <a href="assets/docs/Lawrence_Quick_Resume.pdf" target="_blank" style="font-size: 0.9rem; color: var(--text-secondary); text-decoration: underline;">Download Resume (PDF)</a>
             </div>
@@ -52,11 +48,9 @@
     </header>
 
     <!-- SKILLS GRID -->
-    <!-- Moved visually higher via CSS adjustments to .hero and .section-padding -->
     <section id="skills" class="section-padding">
         <h2 style="text-align: center;">Technical Competencies</h2>
         <div class="skills-grid">
-            
             <div class="skill-card">
                 <h3>Core Tech</h3>
                 <ul>
@@ -66,7 +60,6 @@
                     <li><span>UMG / UI Logic</span></li>
                 </ul>
             </div>
-
             <div class="skill-card">
                 <h3>Systems Design</h3>
                 <ul>
@@ -76,7 +69,6 @@
                     <li><span>AI Behavior Trees</span></li>
                 </ul>
             </div>
-
             <div class="skill-card">
                 <h3>Workflow</h3>
                 <ul>
@@ -86,7 +78,6 @@
                     <li><span>Technical Documentation</span></li>
                 </ul>
             </div>
-
         </div>
     </section>
 
@@ -95,13 +86,16 @@
         <h2 style="margin-bottom: 2rem;">Featured Case Study</h2>
         
         <article class="project-card">
-            <!-- HTML5 Video Replacement for GIF -->
+            <!-- Video Wrapper with Lazy Loading -->
             <div class="project-gif-container">
-                <video autoplay loop muted playsinline>
-                    <!-- Fixed Path: Removed '..//' as index.html is in root -->
-                    <source src="assets/videos/Shooting_Movement_02.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+                <div class="video-wrapper">
+                    <video 
+                        class="lazy-video"
+                        loop muted playsinline
+                        poster="assets/videos/posters/Shooting_Movement_02_poster.jpg"
+                        data-src="assets/videos/Shooting_Movement_02.mp4">
+                    </video>
+                </div>
             </div>
             
             <div class="project-info">
@@ -114,7 +108,6 @@
                     <li>Implemented a modular <strong>Interaction Interface</strong> that allows players to interact with any world object without hard casting dependencies.</li>
                 </ul>
 
-                <!-- UPDATED: Replaced text link with a high-visibility button -->
                 <div style="margin-top: auto;">
                     <a href="projects/asimbly.html" class="btn-primary btn-full">
                         View Technical Breakdown &rarr;
@@ -135,5 +128,8 @@
         </div>
     </footer>
 
+    <!-- SCRIPTS -->
+    <script src="assets/js/media-loader.js"></script>
+    <!-- No carousel needed on home page currently, but kept if you add one later -->
 </body>
 </html>

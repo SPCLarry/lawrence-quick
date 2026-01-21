@@ -5,14 +5,14 @@ document.addEventListener("DOMContentLoaded", function() {
     
     pageCarousels.forEach((container) => {
         // Collect raw media items (img/video) before we modify DOM
-        const rawMediaItems = Array.from(container.children);
+        // Note: We look for .carousel-item which are hidden by default in HTML
+        // OR we just use children. 
+        // Based on new HTML structure, we will expect children to be wrapped or raw.
+        // Let's filter for just elements.
+        const rawMediaItems = Array.from(container.children).filter(el => el.tagName === 'IMG' || el.tagName === 'VIDEO' || el.classList.contains('video-wrapper'));
         
         // Initialize the standard carousel
         initCarousel(container, rawMediaItems);
-        
-        // Add CLICK listener to open Modal
-        // We attach this to the *container* but delegate logic to finding current index
-        // Or simpler: The initCarousel creates slides. We attach click to slides.
     });
 
     // --- Modal Elements ---
@@ -21,10 +21,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalRoot = document.getElementById('modal-carousel-root');
 
     // --- Helper: Core Carousel Logic ---
-    // container: The wrapper div
-    // mediaSource: Array of DOM Nodes (img/video) to put inside
-    // startIndex: Which slide to show first
-    // isModal: Boolean to modify behavior (e.g. click to open modal vs do nothing)
     function initCarousel(container, mediaSource, startIndex = 0, isModal = false) {
         
         container.innerHTML = ''; // Clear existing (safe reset)
@@ -39,22 +35,41 @@ document.addEventListener("DOMContentLoaded", function() {
             const slide = document.createElement('div');
             slide.classList.add('carousel-slide');
 
-            // Clone the media item so we don't steal it from original location
-            // If it's the modal, we are cloning from the page. 
-            // If it's the page, we are just using the elements found in DOM.
+            // Clone the media item
             const mediaClone = mediaItem.cloneNode(true);
 
-            // Ensure video attributes are standard
-            if (mediaClone.tagName === 'VIDEO') {
-                mediaClone.setAttribute('playsinline', '');
-                // If in modal, maybe we want controls? or just autoplay
-                // let's stick to autoplay loop for consistency
+            // Handle Video Wrappers (from Media Loader logic)
+            let videoEl = null;
+            if (mediaClone.classList.contains('video-wrapper')) {
+                videoEl = mediaClone.querySelector('video');
+            } else if (mediaClone.tagName === 'VIDEO') {
+                videoEl = mediaClone;
+            }
+
+            // Clean up cloned video state
+            if (videoEl) {
+                videoEl.removeAttribute('src'); // Ensure it doesn't auto-download yet
+                videoEl.dataset.mediaLoaded = "false"; // Reset loader state
+                videoEl.classList.remove('lazy-video'); // Remove auto-loader class (we manually register below)
+                
+                // If it was wrapped, reset wrapper classes
+                if (mediaClone.classList.contains('video-wrapper')) {
+                    mediaClone.classList.remove('is-playing', 'is-loading');
+                }
             }
 
             slide.appendChild(mediaClone);
             track.appendChild(slide);
 
-            // CLICK EVENT: If this is a Page Carousel, clicking opens Modal
+            // Register with Media Loader
+            // If it's the first slide (startIndex), give it high priority
+            if (videoEl && window.mediaLoaderInstance) {
+                // If this is the active slide, prioritize it
+                const isHighPriority = (index === startIndex);
+                window.mediaLoaderInstance.register(videoEl, isHighPriority);
+            }
+
+            // CLICK EVENT: Open Modal
             if (!isModal) {
                 slide.addEventListener('click', () => {
                     openModal(mediaSource, index);
@@ -71,9 +86,16 @@ document.addEventListener("DOMContentLoaded", function() {
         const updateTrack = () => {
             const translateX = -(currentIndex * 100);
             track.style.transform = `translateX(${translateX}%)`;
+            
+            // Register priority for current visible slide
+            const currentSlide = track.children[currentIndex];
+            const video = currentSlide.querySelector('video');
+            if (video && window.mediaLoaderInstance) {
+                window.mediaLoaderInstance.register(video, true);
+            }
         };
         
-        // Run once to set initial position
+        // Run once
         updateTrack();
 
         // Only add buttons if > 1 item
@@ -89,7 +111,6 @@ document.addEventListener("DOMContentLoaded", function() {
             container.appendChild(prevBtn);
             container.appendChild(nextBtn);
 
-            // Stop click propagation so clicking arrow doesn't open modal
             prevBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation(); 
@@ -111,33 +132,27 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- Modal Logic ---
 
     function openModal(originalMediaItems, clickedIndex) {
-        // 1. Show Modal
         modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Disable scroll on body
-
-        // 2. Initialize Carousel inside Modal
-        // We pass true for 'isModal' to prevent recursion (clicking modal slide shouldn't open new modal)
+        document.body.style.overflow = 'hidden'; 
         initCarousel(modalRoot, originalMediaItems, clickedIndex, true);
     }
 
     function closeModal() {
         modal.classList.add('hidden');
-        document.body.style.overflow = ''; // Re-enable scroll
-        modalRoot.innerHTML = ''; // Destroy content (stops videos)
+        document.body.style.overflow = ''; 
+        modalRoot.innerHTML = ''; 
     }
 
-    modalCloseBtn.addEventListener('click', closeModal);
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
 
-    // Close on clicking outside content (optional, acts as click-off)
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    }
 
-    // Close on Escape Key
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
             closeModal();
         }
     });

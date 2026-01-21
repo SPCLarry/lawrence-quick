@@ -134,7 +134,7 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 }
 
 /* =========================================
-   7. PROJECT CARD
+   7. PROJECT CARD (MEDIA OPTIMIZATION)
    ========================================= */
 .project-card {
     display: grid; grid-template-columns: 1.5fr 1fr; gap: 3rem;
@@ -147,10 +147,50 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     border-right: var(--border); display: flex; align-items: center; justify-content: center;
 }
 
-.project-gif-container img, 
-.project-gif-container video { 
-    width: 100%; height: 100%; object-fit: cover; opacity: 0.9; 
+/* Video Wrapper for Queue Loading Styles */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
 }
+
+.video-wrapper video { 
+    width: 100%; height: 100%; object-fit: cover; 
+    opacity: 0; transition: opacity 0.5s ease-in;
+}
+
+/* When playing, fade in */
+.video-wrapper.is-playing video {
+    opacity: 1;
+}
+
+/* Loading Spinner */
+.video-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 40px; height: 40px;
+    margin-top: -20px; margin-left: -20px;
+    border: 4px solid rgba(255,255,255,0.1);
+    border-top: 4px solid var(--text-accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 5;
+}
+
+.video-wrapper.is-loading::after {
+    opacity: 1;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
 
 .project-info { padding: 3rem 2rem; display: flex; flex-direction: column; justify-content: center; }
 .project-title { font-size: 2rem; margin-bottom: 0.5rem; color: #fff; }
@@ -206,6 +246,7 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     justify-content: center;
     background: #000;
     cursor: zoom-in; /* Indicate clickable for modal */
+    position: relative;
 }
 
 .carousel-slide img,
