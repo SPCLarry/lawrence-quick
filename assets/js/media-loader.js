@@ -34,16 +34,23 @@ class MediaLoader {
         if (videoElement.dataset.mediaLoaded === "true") return;
         if (this.queue.some(item => item.element === videoElement)) return;
 
-        // 1. VISUAL SETUP: Apply poster to wrapper background
+        // 1. VISUAL SETUP: Inject Real Image Tag
         const wrapper = videoElement.closest('.video-wrapper') || videoElement.parentElement;
         if (wrapper) {
-            // Apply loading state immediately
             wrapper.classList.add('is-loading');
             
-            // Set background image from poster attribute
-            const posterUrl = videoElement.getAttribute('poster');
-            if (posterUrl) {
-                wrapper.style.backgroundImage = `url('${posterUrl}')`;
+            // Check if we already injected a poster to avoid duplicates
+            if (!wrapper.querySelector('.poster-image')) {
+                const posterUrl = videoElement.getAttribute('poster');
+                if (posterUrl) {
+                    const img = document.createElement('img');
+                    img.src = posterUrl;
+                    img.className = 'poster-image';
+                    img.alt = "Video Preview";
+                    // Insert before the video so it sits behind it in DOM order 
+                    // (though Z-Index in CSS will handle the real layering)
+                    wrapper.insertBefore(img, videoElement); 
+                }
             }
         }
 
@@ -66,7 +73,6 @@ class MediaLoader {
             item.score = score;
         });
 
-        // Sort: Highest score first
         this.queue.sort((a, b) => b.score - a.score);
         this.processQueue();
     }
@@ -77,8 +83,7 @@ class MediaLoader {
 
         const candidate = this.queue[0];
         
-        // Wait if the best candidate is off-screen (score 0), 
-        // unless we are idle, in which case we preload it.
+        // Wait if best candidate is off-screen, unless we are idle
         if (candidate.score === 0 && this.activeDownloads > 0) return;
 
         this.loadVideoBlob(candidate);
@@ -88,7 +93,6 @@ class MediaLoader {
         const video = item.element;
         const src = video.dataset.src;
 
-        // Remove from queue
         this.queue = this.queue.filter(q => q !== item);
         this.observer.unobserve(video);
         
@@ -100,41 +104,29 @@ class MediaLoader {
         }
 
         // --- THE BLOB STRATEGY ---
-        // 1. Fetch the entire file as a blob
         fetch(src)
             .then(response => {
                 if (!response.ok) throw new Error(`Failed to fetch ${src}`);
                 return response.blob();
             })
             .then(blob => {
-                // 2. Create a local Object URL
                 const objectUrl = URL.createObjectURL(blob);
-                
-                // 3. Assign to video source
                 video.src = objectUrl;
-                
-                // 4. Play (It is now "local", so it should trigger instantly)
                 return video.play();
             })
             .then(() => {
-                // Success: Fade in video
+                // Success
                 const wrapper = video.closest('.video-wrapper') || video.parentElement;
                 if (wrapper) {
                     wrapper.classList.remove('is-loading');
                     wrapper.classList.add('is-playing');
-                    // Clean up the background image after transition to save memory/paint
-                    setTimeout(() => {
-                        wrapper.style.backgroundImage = 'none';
-                    }, 1000); 
                 }
             })
             .catch(err => {
                 console.error("Video load failed:", err);
-                // Fallback: If blob fails, try standard streaming
-                video.src = src; 
+                video.src = src; // Fallback to stream
             })
             .finally(() => {
-                // 5. Cleanup and move to next video
                 this.activeDownloads--;
                 video.dataset.mediaLoaded = "true";
                 this.processQueue();
