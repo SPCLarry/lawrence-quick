@@ -7,6 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../assets/css/loader.css">
+    <style>
+        /* Local override to prevent layout jump on captions */
+        .carousel-caption {
+            min-height: 3em; 
+            margin-top: 0.75rem;
+            transition: opacity 0.2s;
+        }
+    </style>
 </head>
 <body>
 
@@ -68,17 +76,19 @@
                     Using a strict Enum State Machine prevented invalid transitions (e.g., sliding while airborne).
                 </p>
                 
-                <!-- CAROUSEL: Mixed Media Example -->
+                <!-- CAROUSEL -->
                 <div class="media-carousel">
-                    <!-- Slide 1: Video -->
-                    <div class="video-wrapper">
+                    <!-- Slide 1 -->
+                    <div class="video-wrapper" 
+                         data-caption="Movement mechanics in action: Slide-chaining and momentum preservation.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_Climb_01_spectra.jpg"
                             data-src="../assets/videos/Asimbly_Climb_01_spectra.mp4">
                         </video>
                     </div>
-                    <!-- Slide 2: Video -->
-                    <div class="video-wrapper">
+                    <!-- Slide 2 -->
+                    <div class="video-wrapper"
+                         data-caption="Debug visualization showing the capsule trace logic used for wall geometry detection.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_Climb_02_spectra.jpg"
                             data-src="../assets/videos/Asimbly_Climb_02_spectra.mp4">
@@ -86,8 +96,8 @@
                     </div>
                 </div>
                 
-                <p class="text-secondary">
-                    <em>Above: Overview of movement mechanics and debug view showing capsule trace logic for mantling.</em>
+                <p class="carousel-caption text-secondary">
+                    <em>Above: Loading...</em>
                 </p>
             </section>
 
@@ -102,21 +112,55 @@
                     querying the Subsystem ("Model") for data. This MVVM-style approach cleaned up the Blueprint graphs significantly.
                 </p>
 
+                <!-- CAROUSEL -->
                 <div class="media-carousel">
-                    <div class="video-wrapper">
+                    <!-- Slide 1: Video -->
+                    <div class="video-wrapper"
+                         data-caption="Runtime demonstration of the settings menu persistence across level loads.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_UI_LaunchGame_spectra.jpg"
                             data-src="../assets/videos/Asimbly_UI_LaunchGame_spectra.mp4">
                         </video>
                     </div>
-                    <img src="../assets/images/Asimbly_UI_Settings_spectra.jpg" alt="UI Graph">
-                    <img src="../assets/images/UI_01_spectra.jpg" alt="UI Settings">
-                    <img src="../assets/images/UI_02_spectra.jpg" alt="UI Settings 2">
-                    <img src="../assets/images/UI_03_spectra.jpg" alt="UI Settings 3">
-                    <img src="../assets/images/UI_04_spectra.jpg" alt="UI Settings 4">
-                    <img src="../assets/images/UI_05_spectra.jpg" alt="UI Settings 5">
-                    <img src="../assets/images/UI_06_spectra.jpg" alt="UI Settings 6">
+                    <!-- Slide 2: Main Graph -->
+                    <img src="../assets/images/Asimbly_UI_Settings_spectra.jpg" 
+                         alt="UI Graph"
+                         data-caption="The core Settings Widget Graph decoupling the View logic from the Data Model.">
+                    
+                    <!-- Slide 3: Settings Detail -->
+                    <img src="../assets/images/UI_01_spectra.jpg" 
+                         alt="UI Settings"
+                         data-caption="Initialization logic fetching current state from the GameInstance Subsystem.">
+
+                    <!-- Slide 4: Blueprint Logic -->
+                    <img src="../assets/images/UI_02_spectra.jpg" 
+                         alt="UI Settings 2"
+                         data-caption="Event dispatchers handling real-time updates when settings are modified.">
+
+                    <!-- Slide 5: Graph Structure -->
+                    <img src="../assets/images/UI_03_spectra.jpg" 
+                         alt="UI Settings 3"
+                         data-caption="Clean separation of concerns: Input handling vs. State updates.">
+
+                    <!-- Slide 6: Subsystem Binding -->
+                    <img src="../assets/images/UI_04_spectra.jpg" 
+                         alt="UI Settings 4"
+                         data-caption="Binding UI elements directly to C++ delegate events.">
+
+                    <!-- Slide 7: Hierarchy -->
+                    <img src="../assets/images/UI_05_spectra.jpg" 
+                         alt="UI Settings 5"
+                         data-caption="Widget hierarchy structure ensuring modularity and reusability.">
+
+                    <!-- Slide 8: Final View -->
+                    <img src="../assets/images/UI_06_spectra.jpg" 
+                         alt="UI Settings 6"
+                         data-caption="Final implementation of the Video Settings tab within the main menu.">
                 </div>
+
+                <p class="carousel-caption text-secondary">
+                    <em>Above: Loading...</em>
+                </p>
             </section>
 
             <!-- 3. MATERIALS -->
@@ -130,20 +174,29 @@
                     shaders for damage feedback effects, ensuring they were lightweight on the GPU.
                 </p>
 
+                <!-- CAROUSEL -->
                 <div class="media-carousel">
-                    <div class="video-wrapper">
+                    <!-- Slide 1 -->
+                    <div class="video-wrapper"
+                         data-caption="World-space grid shader that handles object scaling without texture stretching.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_HLSL_01_spectra.jpg"
                             data-src="../assets/videos/Asimbly_HLSL_01_spectra.mp4">
                         </video>
                     </div>
-                    <div class="video-wrapper">
+                    <!-- Slide 2 -->
+                    <div class="video-wrapper"
+                         data-caption="Custom HLSL post-process shader for low-health chromatic aberration effects.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_HLSL_02_spectra.jpg"
                             data-src="../assets/videos/Asimbly_HLSL_02_spectra.mp4">
                         </video>
                     </div>
                 </div>
+
+                <p class="carousel-caption text-secondary">
+                    <em>Above: Loading...</em>
+                </p>
             </section>
 
             <!-- 4. AI -->
@@ -157,20 +210,29 @@
                     I used the Environment Query System (EQS) to allow the AI to find optimal range positions relative to the player.
                 </p>
 
+                <!-- CAROUSEL -->
                 <div class="media-carousel">
-                    <div class="video-wrapper">
+                    <!-- Slide 1 -->
+                    <div class="video-wrapper"
+                         data-caption="Behavior Tree debug view showing the AI executing 'Find Cover' and 'Attack' sequences.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_BehaviorTree_01_spectra.jpg"
                             data-src="../assets/videos/Asimbly_BehaviorTree_01_spectra.mp4">
                         </video>
                     </div>
-                    <div class="video-wrapper">
+                    <!-- Slide 2 -->
+                    <div class="video-wrapper"
+                         data-caption="EQS debug visualization scoring cover points based on player visibility and range.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_EQS_01_spectra.jpg"
                             data-src="../assets/videos/Asimbly_EQS_01_spectra.mp4">
                         </video>
                     </div>
                 </div>
+
+                <p class="carousel-caption text-secondary">
+                    <em>Above: Loading...</em>
+                </p>
             </section>
 
             <!-- 5. INTERACTION -->
@@ -185,14 +247,21 @@
                     preventing hard reference chains and reducing load times.
                 </p>
 
+                <!-- CAROUSEL -->
                 <div class="media-carousel">
-                    <div class="video-wrapper">
+                    <!-- Slide 1 -->
+                    <div class="video-wrapper"
+                         data-caption="Interface-based interaction allowing the player to trigger varied actor behaviors without casting.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_Interaction_System_01_spectra.jpg"
                             data-src="../assets/videos/Asimbly_Interaction_System_01_spectra.mp4">
                         </video>
                     </div>
                 </div>
+
+                <p class="carousel-caption text-secondary">
+                    <em>Above: Loading...</em>
+                </p>
             </section>
 
         </main>

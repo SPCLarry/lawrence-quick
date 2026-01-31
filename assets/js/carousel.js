@@ -27,7 +27,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (mediaSource.length === 0) return;
 
-        // 1. Build Track
+        // 1. EXTRACT CAPTIONS
+        // We pull the string from the 'data-caption' attribute of the raw HTML element
+        const captions = mediaSource.map(el => el.getAttribute('data-caption') || "");
+
+        // 2. FIND CAPTION DISPLAY CONTAINER
+        // We look for the immediate next sibling element with class 'carousel-caption'
+        // This effectively links the carousel to the text paragraph below it.
+        const captionDisplay = container.nextElementSibling;
+        const hasCaptionDisplay = captionDisplay && captionDisplay.classList.contains('carousel-caption');
+
+        // 3. BUILD TRACK
         const track = document.createElement('div');
         track.classList.add('carousel-track');
 
@@ -50,9 +60,8 @@ document.addEventListener("DOMContentLoaded", function() {
             if (videoEl) {
                 videoEl.removeAttribute('src'); // Ensure it doesn't auto-download yet
                 videoEl.dataset.mediaLoaded = "false"; // Reset loader state
-                videoEl.classList.remove('lazy-video'); // Remove auto-loader class (we manually register below)
+                videoEl.classList.remove('lazy-video'); // Remove auto-loader class
                 
-                // If it was wrapped, reset wrapper classes
                 if (mediaClone.classList.contains('video-wrapper')) {
                     mediaClone.classList.remove('is-playing', 'is-loading');
                 }
@@ -61,10 +70,8 @@ document.addEventListener("DOMContentLoaded", function() {
             slide.appendChild(mediaClone);
             track.appendChild(slide);
 
-            // Register with Media Loader
-            // If it's the first slide (startIndex), give it high priority
+            // Register with Media Loader (First slide high priority)
             if (videoEl && window.mediaLoaderInstance) {
-                // If this is the active slide, prioritize it
                 const isHighPriority = (index === startIndex);
                 window.mediaLoaderInstance.register(videoEl, isHighPriority);
             }
@@ -79,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         container.appendChild(track);
 
-        // 2. Navigation
+        // 4. NAVIGATION STATE
         let currentIndex = startIndex;
         const maxIndex = mediaSource.length - 1;
 
@@ -93,12 +100,25 @@ document.addEventListener("DOMContentLoaded", function() {
             if (video && window.mediaLoaderInstance) {
                 window.mediaLoaderInstance.register(video, true);
             }
+
+            // UPDATE CAPTION
+            if (hasCaptionDisplay) {
+                const text = captions[currentIndex];
+                if (text) {
+                    // Inject the prefix and the text
+                    captionDisplay.innerHTML = `<em>Above: ${text}</em>`;
+                    captionDisplay.style.opacity = '1';
+                } else {
+                    // If no caption, clear it or hide it
+                    captionDisplay.innerHTML = `&nbsp;`; 
+                }
+            }
         };
         
-        // Run once
+        // Run once to set initial state
         updateTrack();
 
-        // Only add buttons if > 1 item
+        // 5. BUTTONS (Only if > 1 item)
         if (mediaSource.length > 1) {
             const prevBtn = document.createElement('button');
             prevBtn.innerHTML = '&larr;';
