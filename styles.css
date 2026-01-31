@@ -191,11 +191,44 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     transition: opacity 0.5s ease-in;
 }
 
-/* REMOVED: Old CSS Spinner ::after element. 
-   The JS now injects the .loader-cup-container 
-   which is styled by assets/css/loader.css */
+.project-info {
+    padding: 2rem 2rem 2rem 0; /* Right/Bottom/Left padding. 0 on left because of grid gap */
+    display: flex;
+    flex-direction: column; /* Allows margin-top: auto on button to work */
+}
 
-/* --- STATES --- */
+.project-title {
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    line-height: 1.1;
+}
+
+.project-role {
+    display: block;          /* Required for margins to work on a <span> */
+    margin-bottom: 1.5rem;   /* Space below the role */
+    font-family: var(--font-code);
+    color: var(--text-accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.contribution-list {
+    list-style: disc;       /* RESTORES THE BULLETS */
+    padding-left: 1.2rem;   /* Indent bullets so they sit inside the container */
+    margin-bottom: 2rem;    /* Space before the button */
+    color: var(--text-secondary);
+}
+
+.contribution-list li {
+    margin-bottom: 0.75rem; /* Breathing room between bullets */
+    padding-left: 0.5rem;   /* Space between the dot and the text */
+}
+
+.contribution-list li strong {
+    color: var(--text-primary); /* Highlights bold words in white */
+}
 
 .video-wrapper.is-playing video {
     opacity: 1;
@@ -359,6 +392,7 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     .case-grid { grid-template-columns: 1fr; }
     .toc-sticky { display: none; }
     .quick-stack { display: none; }
+    .project-info { padding: 2rem; }
     
     .media-carousel .carousel-btn { opacity: 0.5; }
     .modal-content { width: 100vw; height: 70vh; }
