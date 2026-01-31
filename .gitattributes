@@ -17,5 +17,5 @@
 
 # EXCEPTIONS: Ensure web assets are treated as standard files, NOT LFS
 assets/videos/posters/*.jpg !filter !diff !merge text
-assets/images/*.jpg !filter !diff !merge text  <-- ADD THIS LINE
+assets/images/*.jpg !filter !diff !merge text
 # ------------------------
