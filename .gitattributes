@@ -15,6 +15,7 @@
 # Track generic JPGs in LFS
 *.jpg filter=lfs diff=lfs merge=lfs -text
 
-# EXCEPTION: Ensure web assets (posters) are treated as standard files, NOT LFS
+# EXCEPTIONS: Ensure web assets are treated as standard files, NOT LFS
 assets/videos/posters/*.jpg !filter !diff !merge text
+assets/images/*.jpg !filter !diff !merge text  <-- ADD THIS LINE
 # ------------------------
