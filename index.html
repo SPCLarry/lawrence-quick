@@ -14,10 +14,13 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="logo">Lawrence Quick</a>
-            <div class="nav-links">
-                <a href="#work">Work</a>
-                <a href="#skills">Skills</a>
-                <a href="#contact">Contact</a>
+            
+            <div class="nav-menu">
+                <a href="#work" class="nav-link">Work</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="assets/docs/Lawrence_Quick_Resume.pdf" target="_blank" class="nav-link">Resume</a>
+                <!-- CTA Button: Direct Email Link -->
+                <a href="mailto:lawrencequick2832@gmail.com" class="nav-btn">Contact Me</a>
             </div>
         </div>
     </nav>
@@ -27,7 +30,6 @@
         <div class="hero-content">
             <h1>Unreal Engine <span class="text-gradient">Gameplay Systems</span> Developer</h1>
             
-            <!-- NEW: Location & Experience Tagline -->
             <div class="hero-meta">
                 <span>U.S. Based</span>
                 <span class="meta-divider">|</span>
@@ -48,10 +50,6 @@
             </p>
             
             <a href="#work" class="btn-primary">View Featured Project</a>
-            
-            <div style="margin-top: 1rem;">
-                <a href="assets/docs/Lawrence_Quick_Resume.pdf" target="_blank" style="font-size: 0.9rem; color: var(--text-secondary); text-decoration: underline;">Download Resume (PDF)</a>
-            </div>
         </div>
     </header>
 
@@ -111,8 +109,8 @@
                 <span class="project-role">GAMEPLAY & SYSTEMS ENGINEER | UE5</span>
                 
                 <ul class="contribution-list">
-                    <li>Engineered a custom <strong>Character State Machine</strong> to handle complex transitions between Sliding, Mantling, and Walking without physics conflicts.</li>
-                    <li>Architected a decoupled <strong>UI System</strong> using GameInstance Subsystems, allowing settings to persist across level loads.</li>
+                    <li>Engineered a custom <strong>Character State Machine</strong> to handle complex transitions between Sliding, Mantling, and Walking.</li>
+                    <li>Architected a decoupled <strong>UI System</strong> using GameInstance Subsystems, allowing settings to persist across levels.</li>
                     <li>Designed custom <strong>AI Systems</strong> that provide interesting multi-state behaviors for enemy characters.</li>
                 </ul>
 
@@ -125,7 +123,7 @@
         </article>
     </section>
 
-    <!-- NEW: ABOUT / PHILOSOPHY SECTION -->
+    <!-- PHILOSOPHY SECTION -->
     <section class="section-padding" style="border-top: var(--border);">
         <div style="max-width: 800px; margin: 0 auto; text-align: center;">
             <h2 style="font-size: 2rem; margin-bottom: 1.5rem;">The Systems Mindset</h2>
@@ -134,29 +132,55 @@
                 My passion isn't just in making things move on screen, but in designing the clean data flow, 
                 robust state machines, and modular tools that allow designers to iterate without breaking the build.
             </p>
-            <p style="color: var(--text-secondary); font-size: 1.1rem;">
-                Over the last 5 years, I have specialized deeply in Unreal Engine, moving from simple mechanics 
-                to architecting complex, interconnected gameplay systems. I am driven by the puzzle of logic 
-                and the satisfaction of a system that "just works."
-            </p>
         </div>
     </section>
 
-    <!-- CONTACT / FOOTER -->
-    <footer id="contact" style="text-align: center; padding: 4rem 0; background: var(--bg-surface); border-top: var(--border);">
-        <h3 style="margin-bottom: 1rem;">Ready to Collaborate?</h3>
-        <p style="margin-bottom: 0.5rem;">I am currently available for remote or onsite development roles.</p>
-        <p style="margin-bottom: 2rem; font-size: 0.9rem; color: var(--text-secondary);">
-            Based in the United States. Authorized to work for any U.S. employer.
-        </p>
-        <a href="mailto:lawrencequick2832@gmail.com" class="btn-primary">Contact Me</a>
-        <div style="margin-top: 3rem; color: var(--text-secondary); font-size: 0.9rem;">
+    <!-- TRADITIONAL FOOTER -->
+    <footer id="contact" class="site-footer">
+        <div class="footer-container">
+            
+            <!-- Column 1: Identity -->
+            <div class="footer-col">
+                <h4>Lawrence Quick</h4>
+                <p>
+                    Gameplay Systems Developer specializing in Unreal Engine architecture and C++ foundations.
+                    Currently available for remote or onsite roles in the United States.
+                </p>
+            </div>
+
+            <!-- Column 2: Navigation -->
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="#work">Featured Work</a></li>
+                    <li><a href="#skills">Technical Skills</a></li>
+                    <li><a href="projects/asimbly.html">Case Study: Asimbly</a></li>
+                    <li><a href="assets/docs/Lawrence_Quick_Resume.pdf" target="_blank">Resume (PDF)</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Contact -->
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <ul>
+                    <li>
+                        <a href="mailto:lawrencequick2832@gmail.com" style="color: #fff; font-weight: 600;">
+                            lawrencequick2832@gmail.com
+                        </a>
+                    </li>
+                    <li><a href="#">LinkedIn (Placeholder)</a></li>
+                    <li><a href="#">GitHub (Placeholder)</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
             &copy; 2025 Lawrence Quick. Built with HTML/CSS.
         </div>
     </footer>
 
     <!-- SCRIPTS -->
     <script src="assets/js/media-loader.js"></script>
-    <!-- No carousel needed on home page currently, but kept if you add one later -->
 </body>
 </html>

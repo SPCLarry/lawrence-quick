@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../assets/css/loader.css">
     <style>
-        /* Local override to prevent layout jump on captions */
         .carousel-caption {
             min-height: 3em; 
             margin-top: 0.75rem;
@@ -21,9 +20,16 @@
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="nav-container">
+            <!-- Link Back to Home -->
             <a href="../index.html" class="logo">Lawrence Quick</a>
-            <div class="nav-links">
-                <a href="../index.html">Back to Home</a>
+            
+            <div class="nav-menu">
+                <!-- Links relative to Root -->
+                <a href="../index.html#work" class="nav-link">Work</a>
+                <a href="../index.html#skills" class="nav-link">Skills</a>
+                <a href="../assets/docs/Lawrence_Quick_Resume.pdf" target="_blank" class="nav-link">Resume</a>
+                <!-- CTA Button: Direct Email Link -->
+                <a href="mailto:lawrencequick2832@gmail.com" class="nav-btn">Contact Me</a>
             </div>
         </div>
     </nav>
@@ -184,7 +190,7 @@
                     </div>
                     <!-- Slide 2 -->
                     <div class="video-wrapper"
-                         data-caption="Custom HLSL post-process shader for directional damage indication. This invloved the creation of the vignette and the damage source indicators. The vignette blends from yellow to red based on health percentage.">
+                         data-caption="Custom HLSL post-process shader for directional damage indication. The vignette blends from yellow to red based on health percentage.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_HLSL_02_spectra.jpg"
                             data-src="../assets/videos/Asimbly_HLSL_02_spectra.mp4">
@@ -247,7 +253,7 @@
                 <div class="media-carousel">
                     <!-- Slide 1 -->
                     <div class="video-wrapper"
-                         data-caption="Interaction system and free look working in tandem for seamless object interaction. This includes both traditional interaction and cursor-based interaction for objects in the world.">
+                         data-caption="Interaction system and free look working in tandem for seamless object interaction.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_Interaction_System_01_spectra.jpg"
                             data-src="../assets/videos/Asimbly_Interaction_System_01_spectra.mp4">
@@ -263,9 +269,49 @@
         </main>
     </div>
 
-    <!-- FOOTER -->
-    <footer style="text-align: center; padding: 4rem 0; margin-top: 4rem; border-top: var(--border); color: var(--text-secondary);">
-        <p>&copy; 2025 Lawrence Quick.</p>
+    <!-- TRADITIONAL FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            
+            <!-- Column 1: Identity -->
+            <div class="footer-col">
+                <h4>Lawrence Quick</h4>
+                <p>
+                    Gameplay Systems Developer specializing in Unreal Engine architecture and C++ foundations.
+                    Currently available for remote or onsite roles in the United States.
+                </p>
+            </div>
+
+            <!-- Column 2: Navigation -->
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../index.html#work">Featured Work</a></li>
+                    <li><a href="../index.html#skills">Technical Skills</a></li>
+                    <li><a href="../assets/docs/Lawrence_Quick_Resume.pdf" target="_blank">Resume (PDF)</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Contact -->
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <ul>
+                    <li>
+                        <a href="mailto:lawrencequick2832@gmail.com" style="color: #fff; font-weight: 600;">
+                            lawrencequick2832@gmail.com
+                        </a>
+                    </li>
+                    <li><a href="#">LinkedIn (Placeholder)</a></li>
+                    <li><a href="#">GitHub (Placeholder)</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            &copy; 2025 Lawrence Quick. Built with HTML/CSS.
+        </div>
     </footer>
 
     <!-- MODAL (Hidden by default) -->
