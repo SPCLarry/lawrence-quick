@@ -69,18 +69,17 @@
             <section id="character" class="system-section" style="border-top: none;">
                 <h2>1. Character Systems</h2>
                 <p>
-                    <strong>Goal:</strong> Create a responsive "True First Person" controller supporting Sliding and Mantling.
+                    <strong>Goal:</strong> Create a responsive "True First Person" character supporting Sliding and Mantling.
                 </p>
                 <p>
-                    I extended the standard <code>UCharacterMovementComponent</code> to include custom movement modes. 
-                    Using a strict Enum State Machine prevented invalid transitions (e.g., sliding while airborne).
+                    I created logic specific actor components to handle custom movement behaviors like sliding and mantling.
                 </p>
                 
                 <!-- CAROUSEL -->
                 <div class="media-carousel">
                     <!-- Slide 1 -->
                     <div class="video-wrapper" 
-                         data-caption="Movement mechanics in action: Slide-chaining and momentum preservation.">
+                         data-caption="Movement mechanics in action: Slide-chaining and climbing.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_Climb_01_spectra.jpg"
                             data-src="../assets/videos/Asimbly_Climb_01_spectra.mp4">
@@ -109,14 +108,14 @@
                 </p>
                 <p>
                     I implemented a custom C++ <strong>GameInstance Subsystem</strong>. The UI widgets act strictly as "Views," 
-                    querying the Subsystem ("Model") for data. This MVVM-style approach cleaned up the Blueprint graphs significantly.
+                    querying the Subsystem ("Model") for data. This MVVM-style approach increases maintainability and reduces coupling.
                 </p>
 
                 <!-- CAROUSEL -->
                 <div class="media-carousel">
                     <!-- Slide 1: Video -->
                     <div class="video-wrapper"
-                         data-caption="Runtime demonstration of the settings menu persistence across level loads.">
+                         data-caption="Demonstration of the menu design and entering a game.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_UI_LaunchGame_spectra.jpg"
                             data-src="../assets/videos/Asimbly_UI_LaunchGame_spectra.mp4">
@@ -125,37 +124,37 @@
                     <!-- Slide 2: Main Graph -->
                     <img src="../assets/images/Asimbly_UI_Settings_spectra.jpg" 
                          alt="UI Graph"
-                         data-caption="The core Settings Widget Graph decoupling the View logic from the Data Model.">
+                         data-caption="The core Settings Widget Graph decoupling the View logic from the Data Model using a custom GameInstance Subsystem.">
                     
                     <!-- Slide 3: Settings Detail -->
                     <img src="../assets/images/UI_01_spectra.jpg" 
                          alt="UI Settings"
-                         data-caption="Initialization logic fetching current state from the GameInstance Subsystem.">
+                         data-caption="UI design: Video Settings tab.">
 
                     <!-- Slide 4: Blueprint Logic -->
                     <img src="../assets/images/UI_02_spectra.jpg" 
                          alt="UI Settings 2"
-                         data-caption="Event dispatchers handling real-time updates when settings are modified.">
+                         data-caption="UI design: Audio Settings tab.">
 
                     <!-- Slide 5: Graph Structure -->
                     <img src="../assets/images/UI_03_spectra.jpg" 
                          alt="UI Settings 3"
-                         data-caption="Clean separation of concerns: Input handling vs. State updates.">
+                         data-caption="UI design: Keybinds Settings tab.">
 
                     <!-- Slide 6: Subsystem Binding -->
                     <img src="../assets/images/UI_04_spectra.jpg" 
                          alt="UI Settings 4"
-                         data-caption="Binding UI elements directly to C++ delegate events.">
+                         data-caption="UI design: UGC view & custom context menu widget.">
 
                     <!-- Slide 7: Hierarchy -->
                     <img src="../assets/images/UI_05_spectra.jpg" 
                          alt="UI Settings 5"
-                         data-caption="Widget hierarchy structure ensuring modularity and reusability.">
+                         data-caption="UI design: Play menu overview with countdown timer.">
 
                     <!-- Slide 8: Final View -->
                     <img src="../assets/images/UI_06_spectra.jpg" 
                          alt="UI Settings 6"
-                         data-caption="Final implementation of the Video Settings tab within the main menu.">
+                         data-caption="UI design: Custom carousel widget for browsing UGC maps.">
                 </div>
 
                 <p class="carousel-caption text-secondary">
@@ -167,18 +166,17 @@
             <section id="materials" class="system-section">
                 <h2>3. Material Design & HLSL</h2>
                 <p>
-                    <strong>Goal:</strong> Create performant, grid-based world materials and HLSL UI effects.
+                    <strong>Goal:</strong> Create performant, dynamic post-processing effects that enhance visual feedback without impacting performance.
                 </p>
                 <p>
-                    I utilized a master material workflow to instantiate world grids efficiently. For the UI, I wrote custom HLSL 
-                    shaders for damage feedback effects, ensuring they were lightweight on the GPU.
+                    I created HLSL shaders to create glitch and damage feedback effects that are lightweight and performant.
                 </p>
 
                 <!-- CAROUSEL -->
                 <div class="media-carousel">
                     <!-- Slide 1 -->
                     <div class="video-wrapper"
-                         data-caption="World-space grid shader that handles object scaling without texture stretching.">
+                         data-caption="Custom HLSL post-process shader for glitch effects.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_HLSL_01_spectra.jpg"
                             data-src="../assets/videos/Asimbly_HLSL_01_spectra.mp4">
@@ -186,7 +184,7 @@
                     </div>
                     <!-- Slide 2 -->
                     <div class="video-wrapper"
-                         data-caption="Custom HLSL post-process shader for low-health chromatic aberration effects.">
+                         data-caption="Custom HLSL post-process shader for directional damage indication. This invloved the creation of the vignette and the damage source indicators. The vignette blends from yellow to red based on health percentage.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_HLSL_02_spectra.jpg"
                             data-src="../assets/videos/Asimbly_HLSL_02_spectra.mp4">
@@ -239,19 +237,17 @@
             <section id="interaction" class="system-section">
                 <h2>5. Interaction Systems</h2>
                 <p>
-                    <strong>Goal:</strong> A generic, decoupled interaction system for all world objects.
+                    <strong>Goal:</strong> A complex world based and UI interaction system that feels intuitive and responsive.
                 </p>
                 <p>
-                    I created a <code>BPI_Interact</code> interface. The player character sends an interface message 
-                    to the actor under the crosshair. This removes the need to <code>Cast To</code> specific actor types, 
-                    preventing hard reference chains and reducing load times.
+                    I created a <code>BPI_Interact</code> interface and a <code>Interaction State Machine</code>. The player can either interact traditionally by looking at objects or via a free-look cursor for more precise control.
                 </p>
 
                 <!-- CAROUSEL -->
                 <div class="media-carousel">
                     <!-- Slide 1 -->
                     <div class="video-wrapper"
-                         data-caption="Interface-based interaction allowing the player to trigger varied actor behaviors without casting.">
+                         data-caption="Interaction system and free look working in tandem for seamless object interaction. This includes both traditional interaction and cursor-based interaction for objects in the world.">
                         <video class="lazy-video" loop muted playsinline preload="none"
                             poster="../assets/videos/posters/Asimbly_Interaction_System_01_spectra.jpg"
                             data-src="../assets/videos/Asimbly_Interaction_System_01_spectra.mp4">
