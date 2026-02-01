@@ -61,7 +61,7 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 .text-mono { font-family: var(--font-code); font-size: 0.9rem; color: var(--text-accent); }
 
 /* =========================================
-   4. NAVIGATION (Updated Traditional Layout)
+   4. NAVIGATION
    ========================================= */
 .navbar {
     position: fixed; top: 0; width: 100%; height: var(--header-height);
@@ -90,7 +90,6 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 }
 .nav-link:hover { color: #fff; }
 
-/* The Header CTA Button */
 .nav-btn {
     font-size: 0.85rem; font-weight: 600;
     color: #fff; background: rgba(255,255,255,0.05);
@@ -153,9 +152,19 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 /* =========================================
    6. SKILLS GRID
    ========================================= */
-.section-padding { padding: 5rem 2rem; max-width: var(--max-width); margin: 0 auto; }
+.section-padding { 
+    padding: 5rem 2rem; 
+    max-width: var(--max-width); 
+    width: 100%; /* Ensures full width within flex container */
+    margin: 0 auto; 
+}
 
-.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+.skills-grid { 
+    display: grid; 
+    /* Force 3 columns on desktop to guarantee horizontal layout */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 2rem; 
+}
 
 .skill-card {
     background: var(--bg-surface); padding: 2rem; border-radius: 8px; border: var(--border);
@@ -180,7 +189,6 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     border-right: var(--border); display: flex; align-items: center; justify-content: center;
 }
 
-/* Video Wrapper */
 .video-wrapper {
     position: relative; width: 100%; height: 100%;
     display: flex; align-items: center; justify-content: center;
@@ -284,12 +292,12 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
 .modal-close:hover { transform: scale(1.1); color: var(--text-accent); }
 
 /* =========================================
-   10. TRADITIONAL FOOTER (NEW)
+   10. TRADITIONAL FOOTER
    ========================================= */
 .site-footer {
-    background: #050505; /* Darker than body */
+    background: #050505;
     border-top: var(--border);
-    margin-top: auto; /* Pushes to bottom */
+    margin-top: auto;
     padding: 4rem 0 2rem 0;
     font-size: 0.9rem;
 }
@@ -326,10 +334,13 @@ h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
     .quick-stack { display: none; }
     
     /* Responsive Header */
-    .nav-link { display: none; } /* Hide text links on mobile, keep logo & contact */
+    .nav-link { display: none; } 
     .nav-menu { gap: 1rem; }
     .nav-btn { display: block; margin-left: 0; }
     
     /* Responsive Footer */
     .footer-container { grid-template-columns: 1fr; gap: 2rem; }
+    
+    /* Responsive Skills Grid (Stack on Mobile) */
+    .skills-grid { grid-template-columns: 1fr; }
 }
